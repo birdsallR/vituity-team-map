@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vituity Marketing | Working Genius Team Map</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --vit-orange: #F26522;
+    --vit-orange-light: #FFF3EC;
+    --vit-orange-mid: #FDDCC9;
+    --vit-navy: #1B2A4A;
+    --vit-navy-light: #2D4470;
+    --vit-slate: #4A5568;
+    --vit-gray: #718096;
+    --vit-light: #F7F8FC;
+    --vit-white: #FFFFFF;
+    --vit-border: #E8ECF2;
+    --vit-shadow: 0 2px 12px rgba(27,42,74,0.06);
+    --vit-shadow-lg: 0 8px 32px rgba(27,42,74,0.10);
+    --genius-green: #16A34A;
+    --genius-bg: #F0FDF4;
+    --genius-border: #BBF7D0;
+    --frust-red: #DC2626;
+    --frust-bg: #FEF2F2;
+    --frust-border: #FECACA;
+    --comp-color: #9CA3AF;
+    --comp-bg: #F9FAFB;
+    --w: #3B6AE0; --i: #0EA5A0; --d: #7C3AED; --g: #F26522; --e: #EAB308; --t: #DC2626;
+    --w-bg: #EEF2FF; --i-bg: #ECFDF5; --d-bg: #F5F0FF; --g-bg: #FFF3EC; --e-bg: #FEFCE8; --t-bg: #FEF2F2;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: var(--vit-light);
+    color: var(--vit-navy);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+  /* NAV */
+  nav {
+    background: var(--vit-white);
+    border-bottom: 1px solid var(--vit-border);
+    padding: 0 24px;
+    position: sticky; top: 0; z-index: 100;
+    backdrop-filter: blur(12px);
+  }
+  .nav-inner {
+    max-width: 1200px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 64px;
+  }
+  .nav-brand {
+    display: flex; align-items: center; gap: 12px;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 800; font-size: 20px; color: var(--vit-navy);
+    text-decoration: none;
+  }
+  .nav-logo {
+    width: 36px; height: 36px; background: var(--vit-orange);
+    border-radius: 10px; display: flex; align-items: center; justify-content: center;
+    color: white; font-size: 18px; font-weight: 800;
+  }
+  .nav-links { display: flex; gap: 4px; }
+  .nav-link {
+    padding: 8px 16px; border-radius: 8px; font-size: 14px; font-weight: 500;
+    color: var(--vit-gray); cursor: pointer; transition: all 0.2s; border: none; background: none;
+  }
+  .nav-link:hover { color: var(--vit-navy); background: var(--vit-light); }
+  .nav-link.active { color: var(--vit-orange); background: var(--vit-orange-light); font-weight: 600; }
+
+  /* HERO */
+  .hero {
+    background: linear-gradient(135deg, var(--vit-navy) 0%, var(--vit-navy-light) 100%);
+    padding: 56px 24px 48px;
+    text-align: center; color: white;
+    position: relative; overflow: hidden;
+  }
+  .hero::before {
+    content: ''; position: absolute; top: -50%; right: -20%;
+    width: 600px; height: 600px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(242,101,34,0.15) 0%, transparent 70%);
+  }
+  .hero-sub {
+    font-size: 13px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--vit-orange); margin-bottom: 12px; position: relative;
+  }
+  .hero h1 {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 800;
+    margin-bottom: 12px; position: relative;
+  }
+  .hero p {
+    font-size: 16px; color: rgba(255,255,255,0.7); max-width: 520px;
+    margin: 0 auto; line-height: 1.6; position: relative;
+  }
+
+  /* WIDGET Selector — lives in light content area */
+  .widget-selector {
+    background: var(--vit-white); border-radius: 20px;
+    border: 1px solid var(--vit-border); box-shadow: var(--vit-shadow);
+    padding: 20px 24px; margin-bottom: 20px;
+    display: flex; justify-content: center; gap: 8px; flex-wrap: wrap;
+  }
+  .widget-btn {
+    display: flex; align-items: center; gap: 8px;
+    padding: 10px 18px; border-radius: 100px;
+    border: 2px solid var(--vit-border);
+    background: var(--vit-white); color: var(--vit-gray);
+    font-size: 14px; font-weight: 600; cursor: pointer;
+    transition: all 0.25s; font-family: 'Inter', sans-serif;
+  }
+  .widget-btn:hover { border-color: var(--vit-orange-mid); color: var(--vit-navy); background: var(--vit-orange-light); }
+  .widget-btn.active { background: var(--vit-navy); color: white; border-color: var(--vit-navy); }
+  .widget-btn .wbtn-letter {
+    width: 26px; height: 26px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800; font-size: 13px; color: white;
+    transition: all 0.25s;
+  }
+  .widget-btn.active .wbtn-letter { color: white; }
+
+  /* MAIN CONTENT */
+  .main-content { padding: 40px 0 80px; }
+
+  /* Type Detail Panel */
+  .type-panel {
+    background: var(--vit-white); border-radius: 20px;
+    border: 1px solid var(--vit-border);
+    box-shadow: var(--vit-shadow); padding: 36px;
+    margin-bottom: 32px;
+    animation: fadeSlide 0.35s ease;
+  }
+  @keyframes fadeSlide {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .type-panel-header {
+    display: flex; align-items: flex-start; gap: 20px; margin-bottom: 28px;
+    flex-wrap: wrap;
+  }
+  .type-badge {
+    width: 56px; height: 56px; border-radius: 16px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Plus Jakarta Sans', sans-serif; font-size: 26px; font-weight: 800; color: white;
+    flex-shrink: 0;
+  }
+  .type-panel-info { flex: 1; min-width: 200px; }
+  .type-panel-info h2 {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 26px; font-weight: 800; margin-bottom: 4px;
+  }
+  .type-panel-info p { font-size: 15px; color: var(--vit-gray); line-height: 1.5; }
+  .type-panel-stats {
+    display: flex; gap: 24px; flex-shrink: 0; align-items: center;
+  }
+  .type-stat { text-align: center; }
+  .type-stat-num {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 28px; font-weight: 800;
+  }
+  .type-stat-label { font-size: 11px; color: var(--vit-gray); text-transform: uppercase; letter-spacing: 1px; margin-top: 2px; }
+
+  .type-columns { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .type-col-header {
+    display: flex; align-items: center; gap: 8px;
+    margin-bottom: 14px; font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;
+  }
+  .dot-genius { width: 10px; height: 10px; border-radius: 50%; background: var(--genius-green); }
+  .dot-frust { width: 10px; height: 10px; border-radius: 50%; background: var(--frust-red); }
+
+  .people-list { display: flex; flex-direction: column; gap: 6px; }
+  .person-row {
+    display: flex; align-items: center; gap: 10px;
+    padding: 8px 12px; border-radius: 10px; cursor: pointer;
+    transition: all 0.15s; font-size: 14px; font-weight: 500;
+  }
+  .person-row.genius-row { background: var(--genius-bg); }
+  .person-row.genius-row:hover { background: #DCFCE7; }
+  .person-row.frust-row { background: var(--frust-bg); }
+  .person-row.frust-row:hover { background: #FEE2E2; }
+  .person-row .p-avatar {
+    width: 32px; height: 32px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 700; color: white; flex-shrink: 0;
+  }
+  .person-row .p-name { flex: 1; }
+  .person-row .p-arrow { color: var(--vit-gray); font-size: 16px; opacity: 0; transition: opacity 0.15s; }
+  .person-row:hover .p-arrow { opacity: 1; }
+
+  /* Team Grid Section */
+  .team-section {
+    background: var(--vit-white); border-radius: 20px;
+    border: 1px solid var(--vit-border);
+    box-shadow: var(--vit-shadow); padding: 36px;
+    margin-bottom: 32px;
+  }
+  .team-section-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 24px; flex-wrap: wrap; gap: 16px;
+  }
+  .team-section-header h2 {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 22px; font-weight: 700;
+  }
+  .search-box {
+    position: relative; width: 280px;
+  }
+  .search-box input {
+    width: 100%; padding: 10px 14px 10px 38px; border-radius: 10px;
+    border: 1px solid var(--vit-border); background: var(--vit-light);
+    font-size: 14px; font-family: 'Inter', sans-serif; color: var(--vit-navy);
+    outline: none; transition: border-color 0.2s;
+  }
+  .search-box input:focus { border-color: var(--vit-orange); }
+  .search-box input::placeholder { color: #B0B8C4; }
+  .search-box .s-icon {
+    position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
+    font-size: 15px; color: #B0B8C4;
+  }
+
+  .team-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 12px;
+  }
+  .team-card {
+    display: flex; align-items: center; gap: 12px;
+    padding: 14px 16px; border-radius: 12px; cursor: pointer;
+    border: 1px solid var(--vit-border); transition: all 0.2s;
+    background: var(--vit-white);
+  }
+  .team-card:hover {
+    border-color: var(--vit-orange-mid); background: var(--vit-orange-light);
+    transform: translateY(-2px); box-shadow: var(--vit-shadow);
+  }
+  .team-card .tc-avatar {
+    width: 40px; height: 40px; border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 700; color: white; flex-shrink: 0;
+  }
+  .tc-info { flex: 1; min-width: 0; }
+  .tc-name { font-size: 14px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .tc-genius { font-size: 12px; color: var(--vit-gray); }
+  .tc-letters {
+    display: flex; gap: 3px;
+  }
+  .tc-letter {
+    width: 22px; height: 22px; border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 11px; font-weight: 800;
+    transition: transform 0.15s;
+  }
+  .tc-letter.is-genius { color: white; }
+  .tc-letter.is-dim { background: var(--vit-light); color: #C8CDD5; }
+
+  /* Insights row */
+  .insights-row {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    gap: 20px; margin-bottom: 32px;
+  }
+  .insight-card {
+    background: var(--vit-white); border-radius: 20px;
+    border: 1px solid var(--vit-border);
+    box-shadow: var(--vit-shadow); padding: 28px;
+  }
+  .insight-card h3 {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 17px; font-weight: 700; margin-bottom: 20px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .insight-icon {
+    width: 32px; height: 32px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+  }
+
+  .bar-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+  .bar-label { width: 90px; font-size: 13px; font-weight: 500; color: var(--vit-slate); }
+  .bar-track { flex: 1; height: 24px; background: var(--vit-light); border-radius: 8px; overflow: hidden; }
+  .bar-fill {
+    height: 100%; border-radius: 8px; display: flex; align-items: center;
+    padding: 0 10px; font-size: 12px; font-weight: 700; color: white;
+    transition: width 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .callout-card {
+    padding: 16px 20px; border-radius: 12px; margin-bottom: 10px;
+    border-left: 4px solid; font-size: 14px; line-height: 1.6;
+  }
+  .callout-card:last-child { margin-bottom: 0; }
+  .callout-card strong { display: block; margin-bottom: 2px; }
+  .callout-super { background: #F0FDF4; border-color: var(--genius-green); color: var(--vit-slate); }
+  .callout-watch { background: #FFF7ED; border-color: var(--vit-orange); color: var(--vit-slate); }
+
+  /* Modal */
+  .modal-overlay {
+    position: fixed; inset: 0; background: rgba(27,42,74,0.4); backdrop-filter: blur(6px);
+    z-index: 1000; display: none; align-items: center; justify-content: center;
+    padding: 20px; opacity: 0; transition: opacity 0.25s;
+  }
+  .modal-overlay.active { display: flex; opacity: 1; }
+  .modal {
+    background: var(--vit-white); border-radius: 20px; padding: 32px;
+    max-width: 480px; width: 100%; box-shadow: var(--vit-shadow-lg);
+    transform: scale(0.95); transition: transform 0.25s;
+    max-height: 90vh; overflow-y: auto; position: relative;
+  }
+  .modal-overlay.active .modal { transform: scale(1); }
+  .modal-close {
+    position: absolute; top: 14px; right: 14px; background: var(--vit-light); border: none;
+    width: 32px; height: 32px; border-radius: 8px; cursor: pointer;
+    font-size: 18px; color: var(--vit-gray); display: flex; align-items: center; justify-content: center;
+    transition: background 0.15s;
+  }
+  .modal-close:hover { background: var(--vit-border); }
+  .modal-header { display: flex; align-items: center; gap: 16px; margin-bottom: 24px; }
+  .modal-avatar {
+    width: 56px; height: 56px; border-radius: 16px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px; font-weight: 700; color: white;
+  }
+  .modal-name {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 22px; font-weight: 800;
+  }
+  .modal-subtitle { font-size: 14px; color: var(--vit-gray); margin-top: 2px; }
+
+  .modal-grid {
+    display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 20px;
+  }
+  .modal-type {
+    padding: 12px 8px; border-radius: 12px; text-align: center;
+    border: 1px solid var(--vit-border);
+  }
+  .modal-type.is-genius { border-color: var(--genius-border); background: var(--genius-bg); }
+  .modal-type.is-frust { border-color: var(--frust-border); background: var(--frust-bg); }
+  .modal-type.is-comp { background: var(--comp-bg); }
+  .modal-type-letter {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 20px; font-weight: 800; margin-bottom: 2px;
+  }
+  .modal-type-name { font-size: 10px; font-weight: 600; color: var(--vit-gray); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+  .modal-type-status { font-size: 11px; font-weight: 700; }
+  .modal-type-status.s-genius { color: var(--genius-green); }
+  .modal-type-status.s-frust { color: var(--frust-red); }
+  .modal-type-status.s-comp { color: var(--comp-color); }
+
+  .modal-insight {
+    padding: 16px; border-radius: 12px; background: var(--vit-light);
+    border: 1px solid var(--vit-border); font-size: 14px; line-height: 1.6;
+    color: var(--vit-slate);
+  }
+  .modal-insight strong { color: var(--vit-navy); }
+
+  /* Confetti */
+  #confetti-canvas { position: fixed; inset: 0; z-index: 9999; pointer-events: none; }
+
+  /* Footer */
+  footer {
+    text-align: center; padding: 32px 24px; color: var(--vit-gray);
+    font-size: 13px; border-top: 1px solid var(--vit-border);
+    background: var(--vit-white);
+  }
+  footer a { color: var(--vit-orange); text-decoration: none; font-weight: 500; }
+
+  @media (max-width: 768px) {
+    .type-columns { grid-template-columns: 1fr; }
+    .type-panel-stats { flex-wrap: wrap; }
+    .nav-links { display: none; }
+    .widget-btn span.wbtn-name { display: none; }
+    .widget-btn { padding: 10px 12px; }
+    .modal-grid { grid-template-columns: 1fr 1fr; }
+    .search-box { width: 100%; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a class="nav-brand" href="index.html">
+      <div class="nav-logo">V</div>
+      Marketing Team
+    </a>
+    <div class="nav-links">
+      <a class="nav-link" href="index.html" style="text-decoration:none">&larr; Home</a>
+      <a class="nav-link" href="colorwheel.html" style="text-decoration:none">Color Wheel</a>
+      <a class="nav-link" href="appreciation.html" style="text-decoration:none">Appreciation</a>
+      <span style="width:1px;background:var(--vit-border);margin:0 4px"></span>
+      <button class="nav-link active" onclick="scrollTo('#genius-section')">Genius Types</button>
+      <button class="nav-link" onclick="scrollTo('#insights-section')">Insights</button>
+      <button class="nav-link" onclick="scrollTo('#directory-section')">Directory</button>
+    </div>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-sub">The 6 Types of Working Genius</div>
+  <h1>Vituity Marketing Team Map</h1>
+  <p>Explore how 28 team members bring their unique genius to every project &mdash; from the first spark of wonder to the final push across the finish line.</p>
+</section>
+
+<canvas id="confetti-canvas"></canvas>
+
+<div class="container">
+  <div class="main-content">
+
+    <!-- WIDGET SELECTOR -->
+    <div id="genius-section">
+    <div class="widget-selector" id="widget-nav"></div>
+      <div class="type-panel" id="type-panel"></div>
+    </div>
+
+    <!-- INSIGHTS -->
+    <div id="insights-section">
+      <div class="insights-row">
+        <div class="insight-card">
+          <h3>
+            <div class="insight-icon" style="background:var(--vit-orange-light);color:var(--vit-orange)">&#9881;</div>
+            Genius Distribution
+          </h3>
+          <div id="genius-bars"></div>
+        </div>
+        <div class="insight-card">
+          <h3>
+            <div class="insight-icon" style="background:#EEF2FF;color:var(--w)">&#128161;</div>
+            Team Superpowers
+          </h3>
+          <div class="callout-card callout-super">
+            <strong>Execution Powerhouse</strong>
+            15 Enablement + 16 Tenacity geniuses means when a plan is set, this team delivers every time.
+          </div>
+          <div class="callout-card callout-super">
+            <strong>Innovation Engine</strong>
+            9 Inventors paired with 8 Discerners = creative ideas that actually get vetted and refined.
+          </div>
+          <div class="callout-card callout-watch">
+            <strong>Protect Your Spark Plugs</strong>
+            Only 4 Wonderers and 4 Galvanizers on the team. These rare voices start new initiatives &mdash; make sure they get airtime.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TEAM DIRECTORY -->
+    <div id="directory-section">
+      <div class="team-section">
+        <div class="team-section-header">
+          <h2>Team Directory</h2>
+          <div class="search-box">
+            <span class="s-icon">&#128269;</span>
+            <input type="text" id="search-input" placeholder="Search by name or genius type...">
+          </div>
+        </div>
+        <div class="team-grid" id="team-grid"></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<footer>
+  <div class="container">
+    Built for the Vituity Marketing Team &nbsp;|&nbsp; Powered by <a href="https://www.workinggenius.com" target="_blank">The 6 Types of Working Genius</a> &copy; 2025 The Table Group, Inc.
+  </div>
+</footer>
+
+<div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
+  <div class="modal" id="modal-content"></div>
+</div>
+
+<script>
+const TYPES = {
+  W: { name: 'Wonder', desc: 'The genius of pondering &mdash; asking "why" and "what if" to spark new possibilities.', color: 'var(--w)', bg: 'var(--w-bg)' },
+  I: { name: 'Invention', desc: 'The genius of creativity &mdash; generating original ideas and novel solutions to problems.', color: 'var(--i)', bg: 'var(--i-bg)' },
+  D: { name: 'Discernment', desc: 'The genius of instinct &mdash; using gut and intuition to evaluate ideas and give feedback.', color: 'var(--d)', bg: 'var(--d-bg)' },
+  G: { name: 'Galvanizing', desc: 'The genius of activation &mdash; rallying and inspiring people to take action on an idea.', color: 'var(--g)', bg: 'var(--g-bg)' },
+  E: { name: 'Enablement', desc: 'The genius of assistance &mdash; providing support and helping others bring ideas to life.', color: 'var(--e)', bg: 'var(--e-bg)' },
+  T: { name: 'Tenacity', desc: 'The genius of completion &mdash; pushing projects across the finish line with determination.', color: 'var(--t)', bg: 'var(--t-bg)' }
+};
+
+const TEAM = [
+  { name: 'Adrian N.', genius: ['I','T'], frustration: ['W','G'] },
+  { name: 'Angela H.', genius: ['I','D'], frustration: ['G','E'] },
+  { name: 'Lisa M.', genius: ['I','T'], frustration: ['G','E'] },
+  { name: 'Michelle P.', genius: ['W','I'], frustration: ['G','T'] },
+  { name: 'Sarah M.', genius: ['I','E'], frustration: ['W','G'] },
+  { name: 'Daisee C.', genius: ['I','T'], frustration: ['G','E'] },
+  { name: 'Adam K.', genius: ['W','I'], frustration: ['G','E'] },
+  { name: 'Kelly T.', genius: ['I','G'], frustration: ['E','T'] },
+  { name: 'Trisha V.', genius: ['I','E'], frustration: ['W','T'] },
+  { name: 'Daisy W.', genius: ['D','T'], frustration: ['I','G'] },
+  { name: 'Devin K.', genius: ['E','T'], frustration: ['I','G'] },
+  { name: 'Erin E.', genius: ['D','G'], frustration: ['W','I'] },
+  { name: 'John H.', genius: ['D','E'], frustration: ['I','G'] },
+  { name: 'Kristen B.', genius: ['E','T'], frustration: ['W','I'] },
+  { name: 'Molly M.', genius: ['D','E'], frustration: ['I','T'] },
+  { name: 'Olivia J.', genius: ['D','T'], frustration: ['I','G'] },
+  { name: 'Peyton D.', genius: ['E','T'], frustration: ['I','D'] },
+  { name: 'Kayla L.', genius: ['E','T'], frustration: ['W','I'] },
+  { name: 'Soo E.', genius: ['E','T'], frustration: ['I','G'] },
+  { name: 'April M.', genius: ['W','E'], frustration: ['I','G'] },
+  { name: 'Julia O.', genius: ['D','T'], frustration: ['W','G'] },
+  { name: 'Lisa L.', genius: ['D','G'], frustration: ['W','T'] },
+  { name: 'Ryan B.', genius: ['G','E'], frustration: ['W','D'] },
+  { name: 'Nathan S.', genius: ['E','T'], frustration: ['D','G'] },
+  { name: 'Nicole L.', genius: ['E','T'], frustration: ['D','G'] },
+  { name: 'Tenzin N.', genius: ['E','T'], frustration: ['W','D'] },
+  { name: 'Natalie P.', genius: ['E','T'], frustration: ['D','G'] },
+  { name: 'Paul D.', genius: ['W','T'], frustration: ['D','G'] },
+];
+
+const AVATAR_COLOR = '#1B2A4A';
+
+function initials(name) {
+  return name.replace('.','').trim().split(' ').map(p => p[0]).join('').toUpperCase();
+}
+function status(person, type) {
+  if (person.genius.includes(type)) return 'genius';
+  if (person.frustration.includes(type)) return 'frust';
+  return 'comp';
+}
+
+let activeType = 'W';
+
+// Build hero nav
+function buildWidgetNav() {
+  const nav = document.getElementById('widget-nav');
+  const order = ['W','I','D','G','E','T'];
+  order.forEach((t, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'widget-btn' + (t === activeType ? ' active' : '');
+    btn.dataset.type = t;
+    btn.innerHTML = `<span class="wbtn-letter" style="background:${TYPES[t].color}">${t}</span><span class="wbtn-name">${TYPES[t].name}</span>`;
+    btn.onclick = () => selectType(t);
+    nav.appendChild(btn);
+  });
+}
+
+function selectType(t) {
+  activeType = t;
+  document.querySelectorAll('.widget-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.type === t);
+  });
+  buildTypePanel();
+}
+
+function buildTypePanel() {
+  const panel = document.getElementById('type-panel');
+  const t = activeType;
+  const info = TYPES[t];
+  const geniuses = TEAM.filter(p => p.genius.includes(t)).sort((a,b) => a.name.localeCompare(b.name));
+  const frusts = TEAM.filter(p => p.frustration.includes(t)).sort((a,b) => a.name.localeCompare(b.name));
+
+  const geniusRows = geniuses.map(p => `
+    <div class="person-row genius-row" onclick="openModal('${p.name}')">
+      <div class="p-avatar" style="background:${AVATAR_COLOR}">${initials(p.name)}</div>
+      <span class="p-name">${p.name}</span>
+      <span class="p-arrow">&#8594;</span>
+    </div>
+  `).join('');
+
+  const frustRows = frusts.map(p => `
+    <div class="person-row frust-row" onclick="openModal('${p.name}')">
+      <div class="p-avatar" style="background:${AVATAR_COLOR}">${initials(p.name)}</div>
+      <span class="p-name">${p.name}</span>
+      <span class="p-arrow">&#8594;</span>
+    </div>
+  `).join('');
+
+  panel.innerHTML = `
+    <div class="type-panel-header">
+      <div class="type-badge" style="background:${info.color}">${t}</div>
+      <div class="type-panel-info">
+        <h2>${info.name}</h2>
+        <p>${info.desc}</p>
+      </div>
+      <div class="type-panel-stats">
+        <div class="type-stat">
+          <div class="type-stat-num" style="color:var(--genius-green)">${geniuses.length}</div>
+          <div class="type-stat-label">Genius</div>
+        </div>
+        <div class="type-stat">
+          <div class="type-stat-num" style="color:var(--frust-red)">${frusts.length}</div>
+          <div class="type-stat-label">Frustration</div>
+        </div>
+      </div>
+    </div>
+    <div class="type-columns">
+      <div>
+        <div class="type-col-header"><div class="dot-genius"></div> <span style="color:var(--genius-green)">Genius</span> &mdash; gives them energy</div>
+        <div class="people-list">${geniusRows}</div>
+      </div>
+      <div>
+        <div class="type-col-header"><div class="dot-frust"></div> <span style="color:var(--frust-red)">Frustration</span> &mdash; drains their energy</div>
+        <div class="people-list">${frustRows}</div>
+      </div>
+    </div>
+  `;
+}
+
+// Team grid
+function buildTeamGrid() {
+  const grid = document.getElementById('team-grid');
+  const sorted = [...TEAM].sort((a,b) => a.name.localeCompare(b.name));
+  const order = ['W','I','D','G','E','T'];
+
+  sorted.forEach(p => {
+    const card = document.createElement('div');
+    card.className = 'team-card';
+    card.dataset.search = (p.name + ' ' + p.genius.map(t => TYPES[t].name).join(' ')).toLowerCase();
+    card.onclick = () => openModal(p.name);
+
+    const letters = order.map(t => {
+      const s = status(p, t);
+      if (s === 'genius') {
+        return `<div class="tc-letter is-genius" style="background:${TYPES[t].color}" title="${TYPES[t].name}: Genius">${t}</div>`;
+      }
+      return `<div class="tc-letter is-dim" title="${TYPES[t].name}: ${s === 'frust' ? 'Frustration' : 'Competency'}">${t}</div>`;
+    }).join('');
+
+    card.innerHTML = `
+      <div class="tc-avatar" style="background:${AVATAR_COLOR}">${initials(p.name)}</div>
+      <div class="tc-info">
+        <div class="tc-name">${p.name}</div>
+        <div class="tc-genius">${p.genius.map(t => TYPES[t].name).join(' + ')}</div>
+      </div>
+      <div class="tc-letters">${letters}</div>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+// Search
+document.getElementById('search-input').addEventListener('input', e => {
+  const q = e.target.value.toLowerCase();
+  document.querySelectorAll('.team-card').forEach(c => {
+    c.style.display = c.dataset.search.includes(q) ? '' : 'none';
+  });
+});
+
+// Genius bars
+function buildBars() {
+  const container = document.getElementById('genius-bars');
+  const order = ['T','E','I','D','W','G'];
+  const counts = {};
+  order.forEach(t => counts[t] = 0);
+  TEAM.forEach(p => p.genius.forEach(t => counts[t]++));
+
+  order.forEach(t => {
+    const pct = Math.round(counts[t] / 28 * 100);
+    const row = document.createElement('div');
+    row.className = 'bar-row';
+    row.innerHTML = `
+      <div class="bar-label">${TYPES[t].name}</div>
+      <div class="bar-track">
+        <div class="bar-fill" style="width:0%;background:${TYPES[t].color}">${counts[t]}</div>
+      </div>
+    `;
+    container.appendChild(row);
+    requestAnimationFrame(() => {
+      setTimeout(() => { row.querySelector('.bar-fill').style.width = pct + '%'; }, 200);
+    });
+  });
+
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        container.querySelectorAll('.bar-fill').forEach((b, i) => {
+          const w = b.style.width; b.style.width = '0%';
+          setTimeout(() => b.style.width = w, 80 + i * 80);
+        });
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.3 });
+  obs.observe(container);
+}
+
+// Modal
+const FUN_FACTS = {
+  'WI': "A natural <strong>Ideation</strong> powerhouse! Wonders about possibilities and then invents the solutions. Born to brainstorm.",
+  'WE': "Sees the big picture <strong>and</strong> dives in to help. A rare bridge between vision and execution.",
+  'WT': "Asks the deep questions <strong>and</strong> sees things through to the very end. Philosophical yet relentless.",
+  'IT': "The <strong>creative finisher</strong> &mdash; generates brilliant ideas and has the grit to bring them to life.",
+  'ID': "Creates ideas and instantly knows which ones are gold. A self-filtering <strong>innovation engine</strong>.",
+  'IE': "Invents solutions then helps implement them. The ultimate <strong>team player inventor</strong>.",
+  'IG': "Creates ideas <strong>and</strong> rallies the troops. A rare spark plug who ignites a room with a vision.",
+  'DG': "Spots the right path <strong>and</strong> gets everyone marching toward it. A natural <strong>team leader</strong>.",
+  'DT': "Evaluates with precision and pushes through to completion. The <strong>quality closer</strong>.",
+  'DE': "Knows what's right and volunteers to make it happen. A <strong>reliable compass</strong> for the team.",
+  'GE': "Rallies people <strong>and</strong> jumps in alongside them. Leads from the front &mdash; a true <strong>servant leader</strong>.",
+  'ET': "The ultimate <strong>execution machine</strong> &mdash; eager to help and relentless about finishing. Ship it!"
+};
+
+function openModal(name) {
+  const p = TEAM.find(x => x.name === name);
+  if (!p) return;
+  const overlay = document.getElementById('modal-overlay');
+  const modal = document.getElementById('modal-content');
+  const order = ['W','I','D','G','E','T'];
+  const comboKey = [...p.genius].sort().join('');
+
+  const typeCards = order.map(t => {
+    const s = status(p, t);
+    const cls = s === 'genius' ? 'is-genius' : s === 'frust' ? 'is-frust' : 'is-comp';
+    const sCls = s === 'genius' ? 's-genius' : s === 'frust' ? 's-frust' : 's-comp';
+    const label = s === 'genius' ? 'Genius' : s === 'frust' ? 'Frustration' : 'Competency';
+    return `<div class="modal-type ${cls}">
+      <div class="modal-type-letter" style="color:${TYPES[t].color}">${t}</div>
+      <div class="modal-type-name">${TYPES[t].name}</div>
+      <div class="modal-type-status ${sCls}">${label}</div>
+    </div>`;
+  }).join('');
+
+  const twins = TEAM.filter(x => x !== p && [...x.genius].sort().join('') === comboKey);
+  const funFact = FUN_FACTS[comboKey] || `A unique <strong>${p.genius.map(t=>TYPES[t].name).join(' + ')}</strong> combo.`;
+  const twinNote = twins.length
+    ? `<br><br>&#128101; <strong>Genius twins:</strong> ${twins.map(x=>x.name).join(', ')}`
+    : `<br><br>&#11088; <strong>Unique combo</strong> on the team!`;
+
+  modal.innerHTML = `
+    <button class="modal-close" onclick="closeModal()">&#10005;</button>
+    <div class="modal-header">
+      <div class="modal-avatar" style="background:${AVATAR_COLOR}">${initials(p.name)}</div>
+      <div>
+        <div class="modal-name">${p.name}</div>
+        <div class="modal-subtitle">${p.genius.map(t=>TYPES[t].name).join(' + ')} Genius</div>
+      </div>
+    </div>
+    <div class="modal-grid">${typeCards}</div>
+    <div class="modal-insight">${funFact}${twinNote}</div>
+  `;
+  overlay.classList.add('active');
+  document.body.style.overflow = 'hidden';
+  fireConfetti();
+}
+
+function closeModal(e) {
+  if (e && e.target !== e.currentTarget) return;
+  document.getElementById('modal-overlay').classList.remove('active');
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+function scrollTo(sel) {
+  document.querySelector(sel)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+  event.target.classList.add('active');
+}
+
+// Confetti
+function fireConfetti() {
+  const canvas = document.getElementById('confetti-canvas');
+  const ctx = canvas.getContext('2d');
+  canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+  const colors = ['#F26522','#3B6AE0','#0EA5A0','#7C3AED','#EAB308','#DC2626','#1B2A4A'];
+  const particles = [];
+  for (let i = 0; i < 50; i++) {
+    particles.push({
+      x: Math.random() * canvas.width, y: -10 - Math.random() * 80,
+      w: 5 + Math.random() * 5, h: 3 + Math.random() * 4,
+      color: colors[Math.floor(Math.random() * colors.length)],
+      vy: 2 + Math.random() * 3, vx: (Math.random() - 0.5) * 2.5,
+      rot: Math.random() * 360, rotS: (Math.random() - 0.5) * 8, life: 1
+    });
+  }
+  let frame;
+  function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    let alive = false;
+    particles.forEach(p => {
+      if (p.life <= 0) return;
+      alive = true;
+      p.x += p.vx; p.y += p.vy; p.rot += p.rotS; p.vy += 0.08;
+      if (p.y > canvas.height * 0.65) p.life -= 0.025;
+      ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.rot * Math.PI / 180);
+      ctx.globalAlpha = p.life; ctx.fillStyle = p.color;
+      ctx.fillRect(-p.w/2, -p.h/2, p.w, p.h); ctx.restore();
+    });
+    if (alive) frame = requestAnimationFrame(animate);
+    else ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
+  cancelAnimationFrame(frame); animate();
+}
+
+// Init
+buildWidgetNav();
+buildTypePanel();
+buildTeamGrid();
+buildBars();
+</script>
+</body>
+</html>

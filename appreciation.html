@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vituity Marketing | Appreciation Languages</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --vit-orange: #F26522; --vit-navy: #1B2A4A; --vit-navy-light: #2D4470;
+    --vit-slate: #4A5568; --vit-gray: #718096; --vit-light: #F7F8FC;
+    --vit-white: #FFFFFF; --vit-border: #E8ECF2;
+    --vit-shadow: 0 2px 12px rgba(27,42,74,0.06);
+    --vit-shadow-lg: 0 8px 32px rgba(27,42,74,0.10);
+    --c-words: #7C3AED; --c-words-bg: #F5F0FF; --c-words-light: #DDD6FE;
+    --c-quality: #0891B2; --c-quality-bg: #ECFEFF; --c-quality-light: #A5F3FC;
+    --c-acts: #EA580C; --c-acts-bg: #FFF7ED; --c-acts-light: #FED7AA;
+    --c-gifts: #D97706; --c-gifts-bg: #FFFBEB; --c-gifts-light: #FDE68A;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Inter', sans-serif; background: var(--vit-light); color: var(--vit-navy); }
+
+  nav { background: var(--vit-white); border-bottom: 1px solid var(--vit-border); padding: 0 24px; position: sticky; top: 0; z-index: 100; }
+  .nav-inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 64px; }
+  .nav-brand { display: flex; align-items: center; gap: 12px; font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 800; font-size: 20px; color: var(--vit-navy); text-decoration: none; }
+  .nav-logo { width: 36px; height: 36px; background: var(--vit-orange); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white; font-size: 18px; font-weight: 800; }
+  .nav-links { display: flex; gap: 4px; }
+  .nav-link { padding: 8px 16px; border-radius: 8px; font-size: 14px; font-weight: 500; color: var(--vit-gray); cursor: pointer; transition: all 0.2s; border: none; background: none; text-decoration: none; }
+  .nav-link:hover { color: var(--vit-navy); background: var(--vit-light); }
+
+  .hero { background: linear-gradient(135deg, var(--vit-navy) 0%, var(--vit-navy-light) 100%); padding: 56px 24px 48px; text-align: center; color: white; position: relative; overflow: hidden; }
+  .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(circle at 70% 40%, rgba(124,58,237,0.08) 0%, transparent 50%), radial-gradient(circle at 30% 60%, rgba(8,145,178,0.08) 0%, transparent 50%); }
+  .hero-sub { font-size: 13px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--vit-orange); margin-bottom: 12px; position: relative; }
+  .hero h1 { font-family: 'Plus Jakarta Sans', sans-serif; font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 800; margin-bottom: 12px; position: relative; }
+  .hero p { font-size: 16px; color: rgba(255,255,255,0.7); max-width: 560px; margin: 0 auto; line-height: 1.6; position: relative; }
+
+  .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+  .main { padding: 40px 0 80px; }
+
+  /* Language Cards */
+  .lang-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px; margin-bottom: 32px; }
+  .lang-card {
+    background: var(--vit-white); border-radius: 18px; padding: 24px;
+    border: 1px solid var(--vit-border); box-shadow: var(--vit-shadow);
+    cursor: pointer; transition: all 0.25s; position: relative; overflow: hidden;
+  }
+  .lang-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; }
+  .lang-card:hover { transform: translateY(-4px); box-shadow: var(--vit-shadow-lg); }
+  .lang-card.active { border-width: 2px; }
+
+  .lc-words::before { background: var(--c-words); }
+  .lc-words.active { border-color: var(--c-words); }
+  .lc-quality::before { background: var(--c-quality); }
+  .lc-quality.active { border-color: var(--c-quality); }
+  .lc-acts::before { background: var(--c-acts); }
+  .lc-acts.active { border-color: var(--c-acts); }
+  .lc-gifts::before { background: var(--c-gifts); }
+  .lc-gifts.active { border-color: var(--c-gifts); }
+
+  .lc-icon { font-size: 32px; margin-bottom: 12px; }
+  .lc-name { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 18px; font-weight: 800; margin-bottom: 4px; }
+  .lc-desc { font-size: 13px; color: var(--vit-gray); line-height: 1.5; margin-bottom: 12px; }
+  .lc-stat { display: flex; align-items: baseline; gap: 6px; }
+  .lc-num { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 28px; font-weight: 800; }
+  .lc-label { font-size: 12px; color: var(--vit-gray); }
+
+  /* Detail panel */
+  .detail-panel {
+    background: var(--vit-white); border-radius: 24px;
+    border: 1px solid var(--vit-border); box-shadow: var(--vit-shadow);
+    padding: 36px; margin-bottom: 32px;
+    animation: fadeSlide 0.35s ease;
+  }
+  @keyframes fadeSlide { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+  .dp-header { display: flex; align-items: center; gap: 16px; margin-bottom: 24px; flex-wrap: wrap; }
+  .dp-icon { font-size: 36px; }
+  .dp-info h2 { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 24px; font-weight: 800; }
+  .dp-info p { font-size: 14px; color: var(--vit-gray); margin-top: 2px; }
+
+  .dp-columns { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .dp-col-label { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+  .dp-badge { padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; }
+
+  .dp-people { display: flex; flex-direction: column; gap: 6px; }
+  .dp-person {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 14px; border-radius: 10px; cursor: pointer;
+    transition: all 0.15s; font-size: 14px; font-weight: 500;
+  }
+  .dp-person:hover { transform: translateX(4px); }
+  .dp-person .dp-avatar {
+    width: 32px; height: 32px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 700; color: white; flex-shrink: 0;
+    background: var(--vit-navy);
+  }
+  .dp-person .dp-name { flex: 1; }
+  .dp-person .dp-arrow { color: var(--vit-gray); font-size: 14px; opacity: 0; transition: opacity 0.15s; }
+  .dp-person:hover .dp-arrow { opacity: 1; }
+
+  /* Team grid */
+  .team-section {
+    background: var(--vit-white); border-radius: 24px;
+    border: 1px solid var(--vit-border); box-shadow: var(--vit-shadow);
+    padding: 36px; margin-bottom: 32px;
+  }
+  .team-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; flex-wrap: wrap; gap: 16px; }
+  .team-header h2 { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 22px; font-weight: 700; }
+  .search-box { position: relative; width: 280px; }
+  .search-box input { width: 100%; padding: 10px 14px 10px 38px; border-radius: 10px; border: 1px solid var(--vit-border); background: var(--vit-light); font-size: 14px; font-family: 'Inter', sans-serif; color: var(--vit-navy); outline: none; transition: border-color 0.2s; }
+  .search-box input:focus { border-color: var(--vit-orange); }
+  .search-box input::placeholder { color: #B0B8C4; }
+  .search-box .s-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); font-size: 15px; color: #B0B8C4; }
+
+  .team-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 10px; }
+  .t-card {
+    display: flex; align-items: center; gap: 12px;
+    padding: 14px 16px; border-radius: 12px; cursor: pointer;
+    border: 1px solid var(--vit-border); transition: all 0.2s; background: var(--vit-white);
+  }
+  .t-card:hover { transform: translateY(-2px); box-shadow: var(--vit-shadow); }
+  .t-avatar { width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; color: white; flex-shrink: 0; background: var(--vit-navy); }
+  .t-info { flex: 1; min-width: 0; }
+  .t-name { font-size: 14px; font-weight: 600; }
+  .t-langs { display: flex; gap: 4px; margin-top: 3px; }
+  .t-lang-tag { padding: 2px 8px; border-radius: 6px; font-size: 11px; font-weight: 600; }
+
+  /* Insights */
+  .insights-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 20px; margin-bottom: 32px; }
+  .insight-card { background: var(--vit-white); border-radius: 20px; border: 1px solid var(--vit-border); box-shadow: var(--vit-shadow); padding: 28px; }
+  .insight-card h3 { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 17px; font-weight: 700; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
+  .insight-icon { width: 32px; height: 32px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 16px; }
+  .bar-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+  .bar-label { width: 120px; font-size: 12px; font-weight: 600; color: var(--vit-slate); }
+  .bar-track { flex: 1; height: 28px; background: var(--vit-light); border-radius: 8px; overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: 8px; display: flex; align-items: center; padding: 0 10px; font-size: 13px; font-weight: 700; color: white; transition: width 0.8s cubic-bezier(0.34,1.56,0.64,1); }
+
+  .takeaway {
+    padding: 14px 18px; border-radius: 12px; margin-bottom: 10px;
+    background: var(--vit-light); border: 1px solid var(--vit-border);
+    font-size: 14px; line-height: 1.6; color: var(--vit-slate);
+    display: flex; gap: 10px; align-items: flex-start;
+  }
+  .takeaway:last-child { margin-bottom: 0; }
+  .takeaway .tw-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+  .takeaway strong { color: var(--vit-navy); }
+
+  /* Modal */
+  .modal-overlay { position: fixed; inset: 0; background: rgba(27,42,74,0.4); backdrop-filter: blur(6px); z-index: 1000; display: none; align-items: center; justify-content: center; padding: 20px; opacity: 0; transition: opacity 0.25s; }
+  .modal-overlay.active { display: flex; opacity: 1; }
+  .modal { background: var(--vit-white); border-radius: 20px; padding: 32px; max-width: 440px; width: 100%; box-shadow: var(--vit-shadow-lg); transform: scale(0.95); transition: transform 0.25s; max-height: 90vh; overflow-y: auto; position: relative; }
+  .modal-overlay.active .modal { transform: scale(1); }
+  .modal-close { position: absolute; top: 14px; right: 14px; background: var(--vit-light); border: none; width: 32px; height: 32px; border-radius: 8px; cursor: pointer; font-size: 18px; color: var(--vit-gray); display: flex; align-items: center; justify-content: center; }
+  .modal-close:hover { background: var(--vit-border); }
+
+  .m-top { text-align: center; margin-bottom: 24px; }
+  .m-avatar { width: 72px; height: 72px; border-radius: 20px; margin: 0 auto 16px; display: flex; align-items: center; justify-content: center; font-size: 24px; font-weight: 700; color: white; background: var(--vit-navy); }
+  .m-name { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 24px; font-weight: 800; }
+
+  .m-langs { display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px; }
+  .m-lang-card { padding: 16px; border-radius: 14px; border: 1px solid var(--vit-border); }
+  .m-lang-card.is-primary { border-width: 2px; }
+  .m-lang-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+  .m-lang-name { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 18px; font-weight: 700; }
+  .m-lang-desc { font-size: 13px; color: var(--vit-gray); margin-top: 4px; line-height: 1.5; }
+
+  .m-tip { padding: 16px; border-radius: 14px; background: var(--vit-light); border: 1px solid var(--vit-border); font-size: 14px; line-height: 1.6; color: var(--vit-slate); }
+  .m-tip strong { color: var(--vit-navy); }
+
+  #confetti-canvas { position: fixed; inset: 0; z-index: 9999; pointer-events: none; }
+  footer { text-align: center; padding: 32px 24px; color: var(--vit-gray); font-size: 13px; border-top: 1px solid var(--vit-border); background: var(--vit-white); }
+  footer a { color: var(--vit-orange); text-decoration: none; }
+
+  @media (max-width: 768px) {
+    .dp-columns { grid-template-columns: 1fr; }
+    .lang-cards { grid-template-columns: 1fr 1fr; }
+    .nav-links { display: none; }
+    .search-box { width: 100%; }
+  }
+  @media (max-width: 500px) {
+    .lang-cards { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a class="nav-brand" href="index.html">
+      <div class="nav-logo">V</div>
+      Marketing Team
+    </a>
+    <div class="nav-links">
+      <a class="nav-link" href="index.html" style="text-decoration:none">&larr; Home</a>
+      <a class="nav-link" href="widget.html" style="text-decoration:none">Working Genius</a>
+      <a class="nav-link" href="colorwheel.html" style="text-decoration:none">Color Wheel</a>
+    </div>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-sub">Appreciation in the Workplace</div>
+  <h1>How We Like to Be Appreciated</h1>
+  <p>Everyone receives appreciation differently. Learn your teammates' primary and secondary languages so your thanks always lands.</p>
+</section>
+
+<canvas id="confetti-canvas"></canvas>
+
+<div class="container">
+  <div class="main">
+
+    <!-- LANGUAGE CARDS -->
+    <div class="lang-cards" id="lang-cards"></div>
+
+    <!-- DETAIL PANEL -->
+    <div class="detail-panel" id="detail-panel"></div>
+
+    <!-- INSIGHTS -->
+    <div class="insights-row">
+      <div class="insight-card">
+        <h3>
+          <div class="insight-icon" style="background:var(--c-words-bg);color:var(--c-words)">&#9632;</div>
+          Primary Language Distribution
+        </h3>
+        <div id="lang-bars"></div>
+      </div>
+      <div class="insight-card">
+        <h3>
+          <div class="insight-icon" style="background:var(--c-quality-bg);color:var(--c-quality)">&#9733;</div>
+          Team Takeaways
+        </h3>
+        <div class="takeaway">
+          <span class="tw-icon">&#128172;</span>
+          <div><strong>Words with weight.</strong> "Nice job" doesn't cut it. Add specifics and sincerity &mdash; say what they did and why it mattered.</div>
+        </div>
+        <div class="takeaway">
+          <span class="tw-icon">&#128276;</span>
+          <div><strong>It doesn't have to be public.</strong> A thoughtful 1:1 message or a quick DM can mean just as much as a shout-out in a meeting.</div>
+        </div>
+        <div class="takeaway">
+          <span class="tw-icon">&#127919;</span>
+          <div><strong>Tie it to the mission.</strong> Appreciation hits hardest when it connects someone's work to a bigger goal they care about.</div>
+        </div>
+        <div class="takeaway">
+          <span class="tw-icon">&#9200;</span>
+          <div><strong>Consistency matters.</strong> A single moment of thanks is great; a pattern of recognition builds culture.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DIRECTORY -->
+    <div class="team-section">
+      <div class="team-header">
+        <h2>Everyone's Languages</h2>
+        <div class="search-box">
+          <span class="s-icon">&#128269;</span>
+          <input type="text" id="search-input" placeholder="Search by name or language...">
+        </div>
+      </div>
+      <div class="team-grid" id="team-grid"></div>
+    </div>
+
+  </div>
+</div>
+
+<footer>
+  <div class="container">
+    Built for the Vituity Marketing Team &nbsp;|&nbsp; Adapted from <a href="https://www.appreciationatwork.com/" target="_blank">The 5 Languages of Appreciation in the Workplace</a>
+  </div>
+</footer>
+
+<div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
+  <div class="modal" id="modal-content"></div>
+</div>
+
+<script>
+const LANGS = {
+  'Words of Affirmation': {
+    key: 'words', icon: '&#128172;', color: 'var(--c-words)', bg: 'var(--c-words-bg)', cls: 'lc-words',
+    desc: 'Verbal praise, recognition, and encouragement. Tell them specifically what they did well and why it mattered.',
+    tip: 'Be specific and personal. "Great job on the Q3 deck &mdash; your data storytelling made the exec meeting so much smoother" beats "nice work" every time.'
+  },
+  'Quality Time': {
+    key: 'quality', icon: '&#9201;', color: 'var(--c-quality)', bg: 'var(--c-quality-bg)', cls: 'lc-quality',
+    desc: 'Focused, undivided attention. Give them your full presence &mdash; put away the phone and truly listen.',
+    tip: 'Schedule a coffee chat, hop on a quick call with no agenda, or simply give them your undivided attention in a 1:1. Presence is the gift.'
+  },
+  'Acts of Service': {
+    key: 'acts', icon: '&#129309;', color: 'var(--c-acts)', bg: 'var(--c-acts-bg)', cls: 'lc-acts',
+    desc: 'Helping with tasks or pitching in when they\'re swamped. Actions speak louder than words for these folks.',
+    tip: 'Jump in on a deadline, offer to take something off their plate, or proactively handle a task they\'ve been dreading. Show up, don\'t just speak up.'
+  },
+  'Tangible Gifts': {
+    key: 'gifts', icon: '&#127873;', color: 'var(--c-gifts)', bg: 'var(--c-gifts-bg)', cls: 'lc-gifts',
+    desc: 'Thoughtful tokens that show you were thinking of them. It\'s not about cost &mdash; it\'s about the thought.',
+    tip: 'A favorite coffee, a handwritten note, a small surprise that says "I noticed." The gesture matters more than the price tag.'
+  }
+};
+
+const PEOPLE = [
+  { name: 'Adam', primary: 'Words of Affirmation', secondary: 'Quality Time' },
+  { name: 'April', primary: 'Words of Affirmation', secondary: 'Acts of Service' },
+  { name: 'Angela', primary: 'Quality Time', secondary: 'Words of Affirmation' },
+  { name: 'Daisy', primary: 'Words of Affirmation', secondary: 'Quality Time' },
+  { name: 'Erin', primary: 'Words of Affirmation', secondary: 'Acts of Service' },
+  { name: 'John', primary: 'Words of Affirmation', secondary: 'Acts of Service' },
+  { name: 'Julia', primary: 'Acts of Service', secondary: 'Quality Time' },
+  { name: 'Kayla', primary: 'Quality Time', secondary: 'Words of Affirmation' },
+  { name: 'Kelly', primary: 'Words of Affirmation', secondary: 'Quality Time' },
+  { name: 'Lisa L.', primary: 'Acts of Service', secondary: 'Quality Time' },
+  { name: 'Lisa M.', primary: 'Words of Affirmation', secondary: 'Quality Time' },
+  { name: 'Molly', primary: 'Words of Affirmation', secondary: 'Quality Time' },
+  { name: 'Nate', primary: 'Words of Affirmation', secondary: 'Acts of Service' },
+  { name: 'Olivia', primary: 'Words of Affirmation', secondary: 'Acts of Service' },
+  { name: 'Ryan', primary: 'Words of Affirmation', secondary: 'Quality Time' },
+  { name: 'Sarah', primary: 'Tangible Gifts', secondary: 'Quality Time' },
+  { name: 'Soo', primary: 'Acts of Service', secondary: 'Words of Affirmation' },
+  { name: 'Tenzin', primary: 'Words of Affirmation', secondary: 'Acts of Service' },
+];
+
+function inits(n) { return n.replace('.','').trim().split(' ').map(p=>p[0]).join('').toUpperCase(); }
+
+let activeLang = 'Words of Affirmation';
+
+function buildLangCards() {
+  const container = document.getElementById('lang-cards');
+  const primaryCounts = {};
+  Object.keys(LANGS).forEach(l => primaryCounts[l] = 0);
+  PEOPLE.forEach(p => primaryCounts[p.primary]++);
+
+  Object.entries(LANGS).forEach(([name, info]) => {
+    const card = document.createElement('div');
+    card.className = `lang-card ${info.cls}` + (name === activeLang ? ' active' : '');
+    card.dataset.lang = name;
+    card.onclick = () => selectLang(name);
+    card.innerHTML = `
+      <div class="lc-icon">${info.icon}</div>
+      <div class="lc-name" style="color:${info.color}">${name}</div>
+      <div class="lc-desc">${info.desc}</div>
+      <div class="lc-stat">
+        <div class="lc-num" style="color:${info.color}">${primaryCounts[name]}</div>
+        <div class="lc-label">primary</div>
+      </div>
+    `;
+    container.appendChild(card);
+  });
+}
+
+function selectLang(name) {
+  activeLang = name;
+  document.querySelectorAll('.lang-card').forEach(c => c.classList.toggle('active', c.dataset.lang === name));
+  buildDetailPanel();
+}
+
+function buildDetailPanel() {
+  const panel = document.getElementById('detail-panel');
+  const lang = activeLang;
+  const info = LANGS[lang];
+  const primary = PEOPLE.filter(p => p.primary === lang).sort((a,b) => a.name.localeCompare(b.name));
+  const secondary = PEOPLE.filter(p => p.secondary === lang).sort((a,b) => a.name.localeCompare(b.name));
+
+  const pRows = primary.map(p => `
+    <div class="dp-person" style="background:${info.bg}" onclick="openModal('${p.name}')">
+      <div class="dp-avatar">${inits(p.name)}</div>
+      <span class="dp-name">${p.name}</span>
+      <span class="dp-arrow">&#8594;</span>
+    </div>`).join('');
+
+  const sRows = secondary.map(p => `
+    <div class="dp-person" style="background:var(--vit-light)" onclick="openModal('${p.name}')">
+      <div class="dp-avatar">${inits(p.name)}</div>
+      <span class="dp-name">${p.name}</span>
+      <span class="dp-arrow">&#8594;</span>
+    </div>`).join('');
+
+  panel.innerHTML = `
+    <div class="dp-header">
+      <div class="dp-icon">${info.icon}</div>
+      <div class="dp-info">
+        <h2>${lang}</h2>
+        <p>${info.tip}</p>
+      </div>
+    </div>
+    <div class="dp-columns">
+      <div>
+        <div class="dp-col-label" style="color:${info.color}">
+          Primary <span class="dp-badge" style="background:${info.bg};color:${info.color}">${primary.length}</span>
+        </div>
+        <div class="dp-people">${pRows || '<div style="color:var(--vit-gray);font-size:14px;padding:8px">No one</div>'}</div>
+      </div>
+      <div>
+        <div class="dp-col-label" style="color:var(--vit-gray)">
+          Secondary <span class="dp-badge" style="background:var(--vit-light);color:var(--vit-gray)">${secondary.length}</span>
+        </div>
+        <div class="dp-people">${sRows || '<div style="color:var(--vit-gray);font-size:14px;padding:8px">No one</div>'}</div>
+      </div>
+    </div>
+  `;
+}
+
+function buildTeamGrid() {
+  const grid = document.getElementById('team-grid');
+  const sorted = [...PEOPLE].sort((a,b) => a.name.localeCompare(b.name));
+  sorted.forEach(p => {
+    const card = document.createElement('div');
+    card.className = 't-card';
+    card.dataset.search = (p.name + ' ' + p.primary + ' ' + p.secondary).toLowerCase();
+    card.onclick = () => openModal(p.name);
+    const pInfo = LANGS[p.primary];
+    const sInfo = LANGS[p.secondary];
+    card.innerHTML = `
+      <div class="t-avatar">${inits(p.name)}</div>
+      <div class="t-info">
+        <div class="t-name">${p.name}</div>
+        <div class="t-langs">
+          <span class="t-lang-tag" style="background:${pInfo.bg};color:${pInfo.color}">${pInfo.icon} ${p.primary.split(' ').map(w=>w[0]).join('')}</span>
+          <span class="t-lang-tag" style="background:var(--vit-light);color:var(--vit-gray)">${sInfo.icon} ${p.secondary.split(' ').map(w=>w[0]).join('')}</span>
+        </div>
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+document.getElementById('search-input').addEventListener('input', e => {
+  const q = e.target.value.toLowerCase();
+  document.querySelectorAll('.t-card').forEach(c => {
+    c.style.display = c.dataset.search.includes(q) ? '' : 'none';
+  });
+});
+
+function buildBars() {
+  const container = document.getElementById('lang-bars');
+  const counts = {};
+  Object.keys(LANGS).forEach(l => counts[l] = 0);
+  PEOPLE.forEach(p => counts[p.primary]++);
+  const sorted = Object.entries(counts).sort((a,b) => b[1] - a[1]);
+  sorted.forEach(([lang, count]) => {
+    const pct = Math.round(count / PEOPLE.length * 100);
+    const info = LANGS[lang];
+    const row = document.createElement('div');
+    row.className = 'bar-row';
+    const shortName = lang === 'Words of Affirmation' ? 'Words' : lang === 'Quality Time' ? 'Quality Time' : lang === 'Acts of Service' ? 'Acts of Service' : 'Gifts';
+    row.innerHTML = `
+      <div class="bar-label" style="color:${info.color}">${info.icon} ${shortName}</div>
+      <div class="bar-track">
+        <div class="bar-fill" style="width:0%;background:${info.color}">${count}</div>
+      </div>
+    `;
+    container.appendChild(row);
+    requestAnimationFrame(() => {
+      setTimeout(() => { row.querySelector('.bar-fill').style.width = pct + '%'; }, 200);
+    });
+  });
+}
+
+function openModal(name) {
+  const p = PEOPLE.find(x => x.name === name);
+  if (!p) return;
+  const overlay = document.getElementById('modal-overlay');
+  const modal = document.getElementById('modal-content');
+  const pInfo = LANGS[p.primary];
+  const sInfo = LANGS[p.secondary];
+
+  const twins = PEOPLE.filter(x => x !== p && x.primary === p.primary && x.secondary === p.secondary);
+  const twinHtml = twins.length
+    ? `<br><br><strong>Appreciation twins:</strong> ${twins.map(x=>x.name).join(', ')}`
+    : `<br><br><strong>Unique combo</strong> on the team!`;
+
+  modal.innerHTML = `
+    <button class="modal-close" onclick="closeModal()">&#10005;</button>
+    <div class="m-top">
+      <div class="m-avatar">${inits(p.name)}</div>
+      <div class="m-name">${p.name}</div>
+    </div>
+    <div class="m-langs">
+      <div class="m-lang-card is-primary" style="border-color:${pInfo.color};background:${pInfo.bg}">
+        <div class="m-lang-label" style="color:${pInfo.color}">Primary Language</div>
+        <div class="m-lang-name" style="color:${pInfo.color}">${pInfo.icon} ${p.primary}</div>
+        <div class="m-lang-desc">${pInfo.tip}</div>
+      </div>
+      <div class="m-lang-card" style="background:var(--vit-light)">
+        <div class="m-lang-label" style="color:var(--vit-gray)">Secondary Language</div>
+        <div class="m-lang-name" style="color:var(--vit-slate)">${sInfo.icon} ${p.secondary}</div>
+        <div class="m-lang-desc">${sInfo.tip}</div>
+      </div>
+    </div>
+    <div class="m-tip"><strong>Quick cheat sheet for ${p.name}:</strong> Lead with ${p.primary.toLowerCase()}, and when you really want to make their day, follow up with ${p.secondary.toLowerCase()}.${twinHtml}</div>
+  `;
+  overlay.classList.add('active');
+  document.body.style.overflow = 'hidden';
+  fireConfetti(pInfo.color);
+}
+
+function closeModal(e) {
+  if (e && e.target !== e.currentTarget) return;
+  document.getElementById('modal-overlay').classList.remove('active');
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+function fireConfetti(color) {
+  const canvas = document.getElementById('confetti-canvas');
+  const ctx = canvas.getContext('2d');
+  canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+  const el = document.createElement('div'); el.style.color = color; document.body.appendChild(el);
+  const computed = getComputedStyle(el).color; document.body.removeChild(el);
+  const palette = [computed, '#F26522', '#1B2A4A', '#FFFFFF', '#FFD700', '#7C3AED'];
+  const particles = [];
+  for (let i = 0; i < 50; i++) {
+    particles.push({ x: Math.random()*canvas.width, y: -10-Math.random()*80, w: 5+Math.random()*5, h: 3+Math.random()*4, color: palette[Math.floor(Math.random()*palette.length)], vy: 2+Math.random()*3, vx: (Math.random()-0.5)*2.5, rot: Math.random()*360, rotS: (Math.random()-0.5)*8, life: 1 });
+  }
+  let frame;
+  function animate() {
+    ctx.clearRect(0,0,canvas.width,canvas.height); let alive=false;
+    particles.forEach(p => { if(p.life<=0)return; alive=true; p.x+=p.vx; p.y+=p.vy; p.rot+=p.rotS; p.vy+=0.08; if(p.y>canvas.height*0.65)p.life-=0.025; ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(p.rot*Math.PI/180); ctx.globalAlpha=p.life; ctx.fillStyle=p.color; ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h); ctx.restore(); });
+    if(alive) frame=requestAnimationFrame(animate); else ctx.clearRect(0,0,canvas.width,canvas.height);
+  }
+  cancelAnimationFrame(frame); animate();
+}
+
+buildLangCards();
+buildDetailPanel();
+buildTeamGrid();
+buildBars();
+</script>
+</body>
+</html>

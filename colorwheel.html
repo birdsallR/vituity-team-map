@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vituity Marketing | Personality Color Wheel</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --vit-orange: #F26522; --vit-navy: #1B2A4A; --vit-navy-light: #2D4470;
+    --vit-slate: #4A5568; --vit-gray: #718096; --vit-light: #F7F8FC;
+    --vit-white: #FFFFFF; --vit-border: #E8ECF2;
+    --vit-shadow: 0 2px 12px rgba(27,42,74,0.06);
+    --vit-shadow-lg: 0 8px 32px rgba(27,42,74,0.10);
+    --c-red: #E53935; --c-blue: #1E88E5; --c-green: #43A047; --c-yellow: #F9A825;
+    --c-red-bg: #FFEBEE; --c-blue-bg: #E3F2FD; --c-green-bg: #E8F5E9; --c-yellow-bg: #FFFDE7;
+    --c-red-light: #EF9A9A; --c-blue-light: #90CAF9; --c-green-light: #A5D6A7; --c-yellow-light: #FFF59D;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Inter', sans-serif; background: var(--vit-light); color: var(--vit-navy); }
+
+  nav { background: var(--vit-white); border-bottom: 1px solid var(--vit-border); padding: 0 24px; position: sticky; top: 0; z-index: 100; }
+  .nav-inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 64px; }
+  .nav-brand { display: flex; align-items: center; gap: 12px; font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 800; font-size: 20px; color: var(--vit-navy); text-decoration: none; }
+  .nav-logo { width: 36px; height: 36px; background: var(--vit-orange); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white; font-size: 18px; font-weight: 800; }
+  .nav-links { display: flex; gap: 4px; }
+  .nav-link { padding: 8px 16px; border-radius: 8px; font-size: 14px; font-weight: 500; color: var(--vit-gray); cursor: pointer; transition: all 0.2s; border: none; background: none; text-decoration: none; }
+  .nav-link:hover { color: var(--vit-navy); background: var(--vit-light); }
+
+  .hero { background: linear-gradient(135deg, var(--vit-navy) 0%, var(--vit-navy-light) 100%); padding: 56px 24px 48px; text-align: center; color: white; position: relative; overflow: hidden; }
+  .hero::before { content: ''; position: absolute; inset: 0; background: conic-gradient(from 0deg at 80% 50%, rgba(229,57,53,0.06), rgba(249,168,37,0.06), rgba(67,160,71,0.06), rgba(30,136,229,0.06), rgba(229,57,53,0.06)); }
+  .hero-sub { font-size: 13px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--vit-orange); margin-bottom: 12px; position: relative; }
+  .hero h1 { font-family: 'Plus Jakarta Sans', sans-serif; font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 800; margin-bottom: 12px; position: relative; }
+  .hero p { font-size: 16px; color: rgba(255,255,255,0.7); max-width: 540px; margin: 0 auto; line-height: 1.6; position: relative; }
+
+  .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+  .main { padding: 40px 0 80px; }
+
+  /* Color Key Cards */
+  .color-key { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 32px; }
+  .color-key-card {
+    background: var(--vit-white); border-radius: 16px; padding: 24px;
+    border: 1px solid var(--vit-border); box-shadow: var(--vit-shadow);
+    cursor: pointer; transition: all 0.25s; position: relative; overflow: hidden;
+  }
+  .color-key-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; }
+  .color-key-card:hover { transform: translateY(-4px); box-shadow: var(--vit-shadow-lg); }
+  .color-key-card.active { border-color: var(--vit-navy); }
+  .ck-red::before { background: var(--c-red); } .ck-blue::before { background: var(--c-blue); }
+  .ck-green::before { background: var(--c-green); } .ck-yellow::before { background: var(--c-yellow); }
+
+  .ck-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+  .ck-dot { width: 14px; height: 14px; border-radius: 50%; flex-shrink: 0; }
+  .ck-name { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 18px; font-weight: 800; }
+  .ck-motto { font-size: 14px; font-weight: 600; font-style: italic; color: var(--vit-slate); margin-bottom: 10px; }
+  .ck-traits { display: flex; flex-wrap: wrap; gap: 5px; }
+  .ck-trait { padding: 3px 10px; border-radius: 6px; font-size: 12px; font-weight: 500; }
+  .ck-count {
+    position: absolute; top: 16px; right: 16px;
+    font-family: 'Plus Jakarta Sans', sans-serif; font-size: 22px; font-weight: 800;
+  }
+
+  /* Wheel Section */
+  .wheel-section {
+    background: var(--vit-white); border-radius: 24px;
+    border: 1px solid var(--vit-border); box-shadow: var(--vit-shadow);
+    padding: 40px; margin-bottom: 32px;
+  }
+  .wheel-section h2 {
+    font-family: 'Plus Jakarta Sans', sans-serif; font-size: 22px; font-weight: 700;
+    text-align: center; margin-bottom: 8px;
+  }
+  .wheel-section > p { text-align: center; color: var(--vit-gray); font-size: 14px; margin-bottom: 36px; }
+
+  .wheel-layout { display: flex; align-items: center; justify-content: center; gap: 0; flex-wrap: wrap; }
+
+  /* The visual wheel */
+  .wheel-visual {
+    width: 320px; height: 320px; position: relative; flex-shrink: 0;
+  }
+  .wheel-ring {
+    width: 100%; height: 100%; border-radius: 50%;
+    background: conic-gradient(
+      var(--c-red) 0deg, var(--c-yellow) 90deg,
+      var(--c-green) 180deg, var(--c-blue) 270deg,
+      var(--c-red) 360deg
+    );
+    position: relative;
+    animation: wheelSpin 60s linear infinite;
+  }
+  @keyframes wheelSpin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+  .wheel-ring::after {
+    content: ''; position: absolute; inset: 35%; border-radius: 50%;
+    background: var(--vit-white); box-shadow: inset 0 0 20px rgba(0,0,0,0.05);
+  }
+  .wheel-center {
+    position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+    z-index: 2; pointer-events: none;
+  }
+  .wheel-center-text {
+    font-family: 'Plus Jakarta Sans', sans-serif; font-size: 14px; font-weight: 700;
+    color: var(--vit-navy); text-align: center; line-height: 1.3;
+  }
+  .wheel-center-num {
+    font-size: 32px; font-weight: 800; color: var(--vit-orange);
+  }
+
+  /* Groups around the wheel */
+  .groups-container { flex: 1; min-width: 300px; max-width: 600px; }
+  .color-groups { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+  .color-group {
+    padding: 16px 18px; border-radius: 14px; cursor: pointer;
+    transition: all 0.2s; border: 2px solid transparent;
+  }
+  .color-group:hover { transform: scale(1.02); }
+  .color-group.active { border-color: var(--vit-navy); box-shadow: var(--vit-shadow); }
+
+  .cg-label {
+    font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;
+    margin-bottom: 8px; display: flex; align-items: center; gap: 8px;
+  }
+  .cg-label .cg-count {
+    font-size: 11px; font-weight: 600; background: rgba(0,0,0,0.08); padding: 2px 7px;
+    border-radius: 4px; letter-spacing: 0;
+  }
+  .cg-names { display: flex; flex-direction: column; gap: 4px; }
+  .cg-person {
+    font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.15s;
+    padding: 4px 8px; border-radius: 6px; display: inline-block; width: fit-content;
+  }
+  .cg-person:hover { transform: translateX(4px); }
+
+  /* Color assignments for groups */
+  .grp-red { background: var(--c-red-bg); }
+  .grp-red .cg-label { color: var(--c-red); }
+  .grp-red .cg-person { color: var(--c-red); }
+  .grp-red .cg-person:hover { background: rgba(229,57,53,0.1); }
+
+  .grp-blue { background: var(--c-blue-bg); }
+  .grp-blue .cg-label { color: var(--c-blue); }
+  .grp-blue .cg-person { color: var(--c-blue); }
+  .grp-blue .cg-person:hover { background: rgba(30,136,229,0.1); }
+
+  .grp-green { background: var(--c-green-bg); }
+  .grp-green .cg-label { color: var(--c-green); }
+  .grp-green .cg-person { color: var(--c-green); }
+  .grp-green .cg-person:hover { background: rgba(67,160,71,0.1); }
+
+  .grp-yellow { background: var(--c-yellow-bg); }
+  .grp-yellow .cg-label { color: var(--c-yellow); }
+  .grp-yellow .cg-person { color: #E8A000; }
+  .grp-yellow .cg-person:hover { background: rgba(249,168,37,0.1); }
+
+  .grp-red-blue { background: linear-gradient(135deg, var(--c-red-bg), var(--c-blue-bg)); }
+  .grp-red-blue .cg-label { color: #7B1FA2; }
+  .grp-red-blue .cg-person { background: linear-gradient(135deg, var(--c-red), var(--c-blue)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .grp-red-blue .cg-person:hover { opacity: 0.8; }
+
+  .grp-red-green { background: linear-gradient(135deg, var(--c-red-bg), var(--c-green-bg)); }
+  .grp-red-green .cg-label { color: #795548; }
+  .grp-red-green .cg-person { background: linear-gradient(135deg, var(--c-red), var(--c-green)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+
+  .grp-blue-green { background: linear-gradient(135deg, var(--c-blue-bg), var(--c-green-bg)); }
+  .grp-blue-green .cg-label { color: #00796B; }
+  .grp-blue-green .cg-person { background: linear-gradient(135deg, var(--c-blue), var(--c-green)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+
+  .grp-yellow-blue { background: linear-gradient(135deg, var(--c-yellow-bg), var(--c-blue-bg)); }
+  .grp-yellow-blue .cg-label { color: #558B2F; }
+  .grp-yellow-blue .cg-person { background: linear-gradient(135deg, #E8A000, var(--c-blue)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+
+  .grp-yellow-green { background: linear-gradient(135deg, var(--c-yellow-bg), var(--c-green-bg)); }
+  .grp-yellow-green .cg-label { color: #689F38; }
+  .grp-yellow-green .cg-person { background: linear-gradient(135deg, #E8A000, var(--c-green)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+
+  /* Directory */
+  .directory-section {
+    background: var(--vit-white); border-radius: 24px;
+    border: 1px solid var(--vit-border); box-shadow: var(--vit-shadow);
+    padding: 36px; margin-bottom: 32px;
+  }
+  .directory-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 24px; flex-wrap: wrap; gap: 16px;
+  }
+  .directory-header h2 { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 22px; font-weight: 700; }
+  .search-box { position: relative; width: 280px; }
+  .search-box input {
+    width: 100%; padding: 10px 14px 10px 38px; border-radius: 10px;
+    border: 1px solid var(--vit-border); background: var(--vit-light);
+    font-size: 14px; font-family: 'Inter', sans-serif; color: var(--vit-navy);
+    outline: none; transition: border-color 0.2s;
+  }
+  .search-box input:focus { border-color: var(--vit-orange); }
+  .search-box input::placeholder { color: #B0B8C4; }
+  .search-box .s-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); font-size: 15px; color: #B0B8C4; }
+
+  .dir-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 10px; }
+  .dir-card {
+    display: flex; align-items: center; gap: 12px;
+    padding: 12px 16px; border-radius: 12px; cursor: pointer;
+    border: 1px solid var(--vit-border); transition: all 0.2s; background: var(--vit-white);
+  }
+  .dir-card:hover { transform: translateY(-2px); box-shadow: var(--vit-shadow); }
+  .dir-avatar {
+    width: 40px; height: 40px; border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 700; color: white; flex-shrink: 0;
+    background: var(--vit-navy);
+  }
+  .dir-info { flex: 1; min-width: 0; }
+  .dir-name { font-size: 14px; font-weight: 700; }
+  .dir-color { font-size: 12px; }
+  .dir-swatch {
+    display: flex; gap: 3px;
+  }
+  .dir-swatch-dot {
+    width: 18px; height: 18px; border-radius: 50%; border: 2px solid white;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+  }
+
+  /* Insights */
+  .insights-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 20px; margin-bottom: 32px; }
+  .insight-card {
+    background: var(--vit-white); border-radius: 20px;
+    border: 1px solid var(--vit-border); box-shadow: var(--vit-shadow); padding: 28px;
+  }
+  .insight-card h3 {
+    font-family: 'Plus Jakarta Sans', sans-serif; font-size: 17px; font-weight: 700;
+    margin-bottom: 20px; display: flex; align-items: center; gap: 10px;
+  }
+  .insight-icon {
+    width: 32px; height: 32px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center; font-size: 16px;
+  }
+  .bar-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+  .bar-label { width: 70px; font-size: 13px; font-weight: 600; }
+  .bar-track { flex: 1; height: 28px; background: var(--vit-light); border-radius: 8px; overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: 8px; display: flex; align-items: center; padding: 0 10px; font-size: 13px; font-weight: 700; color: white; transition: width 0.8s cubic-bezier(0.34,1.56,0.64,1); }
+
+  .callout { padding: 16px 20px; border-radius: 12px; margin-bottom: 10px; border-left: 4px solid; font-size: 14px; line-height: 1.6; color: var(--vit-slate); }
+  .callout:last-child { margin-bottom: 0; }
+  .callout strong { display: block; margin-bottom: 2px; color: var(--vit-navy); }
+  .callout-green { background: var(--c-green-bg); border-color: var(--c-green); }
+  .callout-yellow { background: var(--c-yellow-bg); border-color: var(--c-yellow); }
+  .callout-red { background: var(--c-red-bg); border-color: var(--c-red); }
+
+  /* Modal */
+  .modal-overlay {
+    position: fixed; inset: 0; background: rgba(27,42,74,0.4); backdrop-filter: blur(6px);
+    z-index: 1000; display: none; align-items: center; justify-content: center; padding: 20px;
+    opacity: 0; transition: opacity 0.25s;
+  }
+  .modal-overlay.active { display: flex; opacity: 1; }
+  .modal {
+    background: var(--vit-white); border-radius: 20px; padding: 32px;
+    max-width: 440px; width: 100%; box-shadow: var(--vit-shadow-lg);
+    transform: scale(0.95); transition: transform 0.25s;
+    max-height: 90vh; overflow-y: auto; position: relative;
+  }
+  .modal-overlay.active .modal { transform: scale(1); }
+  .modal-close {
+    position: absolute; top: 14px; right: 14px; background: var(--vit-light); border: none;
+    width: 32px; height: 32px; border-radius: 8px; cursor: pointer; font-size: 18px;
+    color: var(--vit-gray); display: flex; align-items: center; justify-content: center;
+  }
+  .modal-close:hover { background: var(--vit-border); }
+  .modal-top { text-align: center; margin-bottom: 24px; }
+  .modal-avatar-big {
+    width: 72px; height: 72px; border-radius: 20px; margin: 0 auto 16px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 24px; font-weight: 700; color: white; background: var(--vit-navy);
+  }
+  .modal-person-name { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 24px; font-weight: 800; margin-bottom: 4px; }
+  .modal-color-label { font-size: 15px; font-weight: 600; }
+
+  .modal-swatches { display: flex; justify-content: center; gap: 8px; margin-bottom: 24px; }
+  .modal-swatch {
+    width: 48px; height: 48px; border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px; position: relative;
+  }
+  .modal-swatch .swatch-label {
+    position: absolute; bottom: -18px; font-size: 10px; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.5px; white-space: nowrap;
+  }
+
+  .modal-traits {
+    padding: 16px 20px; border-radius: 14px; background: var(--vit-light);
+    border: 1px solid var(--vit-border); margin-bottom: 16px;
+  }
+  .modal-traits h4 { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--vit-gray); margin-bottom: 10px; }
+  .modal-trait-list { display: flex; flex-wrap: wrap; gap: 6px; }
+  .modal-trait { padding: 5px 12px; border-radius: 8px; font-size: 13px; font-weight: 600; }
+
+  .modal-tip {
+    padding: 14px 18px; border-radius: 12px; font-size: 14px; line-height: 1.6;
+    color: var(--vit-slate); border: 1px solid var(--vit-border); background: var(--vit-light);
+  }
+  .modal-tip strong { color: var(--vit-navy); }
+
+  .modal-scores { padding: 16px; border-radius: 14px; background: var(--vit-light); border: 1px solid var(--vit-border); margin-bottom: 16px; }
+  .modal-scores h4 { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--vit-gray); margin-bottom: 12px; }
+  .score-row { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+  .score-row:last-child { margin-bottom: 0; }
+  .score-label { width: 56px; font-size: 12px; font-weight: 600; }
+  .score-track { flex: 1; height: 18px; background: rgba(255,255,255,0.8); border-radius: 6px; overflow: hidden; }
+  .score-fill { height: 100%; border-radius: 6px; display: flex; align-items: center; padding: 0 8px; font-size: 11px; font-weight: 700; color: white; transition: width 0.6s ease; }
+  .score-badge { font-size: 11px; font-weight: 700; padding: 2px 6px; border-radius: 4px; background: rgba(0,0,0,0.06); }
+
+  /* Confetti */
+  #confetti-canvas { position: fixed; inset: 0; z-index: 9999; pointer-events: none; }
+
+  footer { text-align: center; padding: 32px 24px; color: var(--vit-gray); font-size: 13px; border-top: 1px solid var(--vit-border); background: var(--vit-white); }
+  footer a { color: var(--vit-orange); text-decoration: none; font-weight: 500; }
+
+  @media (max-width: 900px) {
+    .color-key { grid-template-columns: 1fr 1fr; }
+    .wheel-layout { flex-direction: column; gap: 32px; }
+    .wheel-visual { width: 240px; height: 240px; }
+    .color-groups { grid-template-columns: 1fr; }
+    .nav-links { display: none; }
+    .search-box { width: 100%; }
+  }
+  @media (max-width: 500px) {
+    .color-key { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a class="nav-brand" href="index.html">
+      <div class="nav-logo">V</div>
+      Marketing Team
+    </a>
+    <div class="nav-links">
+      <a class="nav-link" href="index.html" style="text-decoration:none">&larr; Home</a>
+      <a class="nav-link" href="widget.html" style="text-decoration:none">Working Genius</a>
+      <a class="nav-link" href="appreciation.html" style="text-decoration:none">Appreciation</a>
+    </div>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-sub">Personality Spectrum</div>
+  <h1>Color Wheel</h1>
+  <p>Everyone communicates differently. Discover your teammates' personality colors and learn the best way to work with each person.</p>
+</section>
+
+<canvas id="confetti-canvas"></canvas>
+
+<div class="container">
+  <div class="main">
+
+    <!-- COLOR KEY -->
+    <div class="color-key" id="color-key"></div>
+
+    <!-- WHEEL + GROUPS -->
+    <div class="wheel-section">
+      <h2>Where Does Everyone Land?</h2>
+      <p>Click any name to see their full profile. Blended colors mean they identify equally with both.</p>
+      <div class="wheel-layout">
+        <div class="wheel-visual">
+          <div class="wheel-ring"></div>
+          <div class="wheel-center">
+            <div class="wheel-center-text">
+              <div class="wheel-center-num">24</div>
+              team members
+            </div>
+          </div>
+        </div>
+        <div class="groups-container">
+          <div class="color-groups" id="color-groups"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- INSIGHTS -->
+    <div class="insights-row">
+      <div class="insight-card">
+        <h3>
+          <div class="insight-icon" style="background:var(--c-green-bg);color:var(--c-green)">&#9632;</div>
+          Color Distribution
+        </h3>
+        <div id="color-bars"></div>
+        <p style="font-size:12px;color:var(--vit-gray);margin-top:12px;line-height:1.5;">* Blended members count toward both colors, so totals exceed 23.</p>
+      </div>
+      <div class="insight-card">
+        <h3>
+          <div class="insight-icon" style="background:var(--c-yellow-bg);color:#E8A000">&#9733;</div>
+          Team Dynamics
+        </h3>
+        <div class="callout callout-green">
+          <strong>Green Dominance</strong>
+          15 members carry Green energy. This team leads with empathy, patience, and genuine care for people. That's your secret sauce.
+        </div>
+        <div class="callout callout-yellow">
+          <strong>Yellow + Green = 6 People</strong>
+          Your largest blend! These teammates are both enthusiastic AND caring &mdash; they bring energy to the room without steamrolling.
+        </div>
+        <div class="callout callout-red">
+          <strong>Pure Red is Rare</strong>
+          Only 2 pure Reds. When you need a direct, no-nonsense decision, lean on Lisa L. and Kristen &mdash; they'll cut through the noise.
+        </div>
+      </div>
+    </div>
+
+    <!-- DIRECTORY -->
+    <div class="directory-section">
+      <div class="directory-header">
+        <h2>Everyone at a Glance</h2>
+        <div class="search-box">
+          <span class="s-icon">&#128269;</span>
+          <input type="text" id="search-input" placeholder="Search by name or color...">
+        </div>
+      </div>
+      <div class="dir-grid" id="dir-grid"></div>
+    </div>
+
+  </div>
+</div>
+
+<footer>
+  <div class="container">
+    Built for the Vituity Marketing Team &nbsp;|&nbsp; Personality Spectrum adapted from the Insights Discovery Color Model
+  </div>
+</footer>
+
+<div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
+  <div class="modal" id="modal-content"></div>
+</div>
+
+<script>
+const COLORS = {
+  Red:    { hex: '#E53935', bg: '#FFEBEE', motto: '"Be brief."', traits: ['Competitive','Demanding','Determined','Strong-willed','Purposeful'], tip: 'Get to the point fast. They value efficiency over small talk. Lead with results.' },
+  Blue:   { hex: '#1E88E5', bg: '#E3F2FD', motto: '"Give me details."', traits: ['Cautious','Precise','Deliberating','Questioning','Formal'], tip: 'Come prepared with data and specifics. Give them time to process. Don\'t rush decisions.' },
+  Green:  { hex: '#43A047', bg: '#E8F5E9', motto: '"Show me you care."', traits: ['Caring','Encouraging','Sharing','Patient','Relaxed'], tip: 'Start with a personal check-in. Show appreciation. Create a safe space for their ideas.' },
+  Yellow: { hex: '#F9A825', bg: '#FFFDE7', motto: '"Involve me."', traits: ['Sociable','Dynamic','Expressive','Enthusiastic','Persuasive'], tip: 'Keep it high-energy and collaborative. Let them brainstorm out loud. Don\'t over-structure.' }
+};
+
+const PEOPLE = [
+  { name: 'Lisa L.', colors: ['Red'] },
+  { name: 'Kristen', colors: ['Red'] },
+  { name: 'April', colors: ['Blue'] },
+  { name: 'Daisy', colors: ['Blue'] },
+  { name: 'Kayla', colors: ['Green'] },
+  { name: 'Tenzin', colors: ['Green'] },
+  { name: 'Nicole', colors: ['Green'] },
+  { name: 'Natalie', colors: ['Green'] },
+  { name: 'Adrian', colors: ['Green'] },
+  { name: 'Julia', colors: ['Red','Blue'] },
+  { name: 'Lisa M.', colors: ['Red','Blue'] },
+  { name: 'Erin', colors: ['Red','Blue'] },
+  { name: 'Daisee', colors: ['Red','Blue'] },
+  { name: 'Soo', colors: ['Green','Red'], scores: { Green: 11, Red: 7, Blue: 6, Yellow: 3 } },
+  { name: 'Nate', colors: ['Blue','Green'] },
+  { name: 'John', colors: ['Blue','Green'] },
+  { name: 'Adam', colors: ['Yellow','Blue'] },
+  { name: 'Sarah', colors: ['Yellow','Green'] },
+  { name: 'Angie', colors: ['Yellow','Green'] },
+  { name: 'Molly', colors: ['Yellow','Green'] },
+  { name: 'Ryan', colors: ['Yellow','Green'] },
+  { name: 'Kelly', colors: ['Yellow','Green'] },
+  { name: 'Olivia', colors: ['Yellow','Green'] },
+  { name: 'Paul', colors: ['Green','Blue'], scores: { Green: 10, Blue: 8, Red: 4, Yellow: 3 } },
+];
+
+const GROUPS = [
+  { key: 'red', label: 'Red', cls: 'grp-red', colors: ['Red'] },
+  { key: 'blue', label: 'Blue', cls: 'grp-blue', colors: ['Blue'] },
+  { key: 'green', label: 'Green', cls: 'grp-green', colors: ['Green'] },
+  { key: 'red-blue', label: 'Red + Blue', cls: 'grp-red-blue', colors: ['Red','Blue'] },
+  { key: 'red-green', label: 'Red + Green', cls: 'grp-red-green', colors: ['Red','Green'] },
+  { key: 'blue-green', label: 'Blue + Green', cls: 'grp-blue-green', colors: ['Blue','Green'] },
+  { key: 'yellow-blue', label: 'Yellow + Blue', cls: 'grp-yellow-blue', colors: ['Yellow','Blue'] },
+  { key: 'yellow-green', label: 'Yellow + Green', cls: 'grp-yellow-green', colors: ['Yellow','Green'] },
+];
+
+function inits(name) {
+  return name.replace('.','').trim().split(' ').map(p => p[0]).join('').toUpperCase();
+}
+
+function sameColors(a, b) {
+  return a.length === b.length && [...a].sort().join() === [...b].sort().join();
+}
+
+function colorLabel(colors) {
+  return colors.join(' + ');
+}
+
+function nameStyle(colors) {
+  if (colors.length === 1) return `color:${COLORS[colors[0]].hex}`;
+  return `background:linear-gradient(135deg,${colors.map(c=>COLORS[c].hex).join(',')});-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;`;
+}
+
+// Build color key cards
+function buildColorKey() {
+  const container = document.getElementById('color-key');
+  const order = ['Red','Blue','Green','Yellow'];
+  const totals = { Red: 7, Blue: 10, Green: 15, Yellow: 7 };
+  order.forEach(c => {
+    const info = COLORS[c];
+    const card = document.createElement('div');
+    card.className = `color-key-card ck-${c.toLowerCase()}`;
+    card.innerHTML = `
+      <div class="ck-count" style="color:${info.hex}">${totals[c]}</div>
+      <div class="ck-header">
+        <div class="ck-dot" style="background:${info.hex}"></div>
+        <div class="ck-name" style="color:${info.hex}">${c}</div>
+      </div>
+      <div class="ck-motto">${info.motto}</div>
+      <div class="ck-traits">${info.traits.map(t => `<span class="ck-trait" style="background:${info.bg};color:${info.hex}">${t}</span>`).join('')}</div>
+    `;
+    container.appendChild(card);
+  });
+}
+
+// Build groups
+function buildGroups() {
+  const container = document.getElementById('color-groups');
+  GROUPS.forEach(g => {
+    const members = PEOPLE.filter(p => sameColors(p.colors, g.colors));
+    if (members.length === 0) return;
+    const div = document.createElement('div');
+    div.className = `color-group ${g.cls}`;
+    div.innerHTML = `
+      <div class="cg-label">${g.label} <span class="cg-count">${members.length}</span></div>
+      <div class="cg-names">${members.map(p =>
+        `<span class="cg-person" onclick="openModal('${p.name}')">${p.name}</span>`
+      ).join('')}</div>
+    `;
+    container.appendChild(div);
+  });
+}
+
+// Build directory
+function buildDirectory() {
+  const grid = document.getElementById('dir-grid');
+  const sorted = [...PEOPLE].sort((a,b) => a.name.localeCompare(b.name));
+  sorted.forEach(p => {
+    const card = document.createElement('div');
+    card.className = 'dir-card';
+    card.dataset.search = (p.name + ' ' + p.colors.join(' ')).toLowerCase();
+    card.onclick = () => openModal(p.name);
+    const swatches = p.colors.map(c => `<div class="dir-swatch-dot" style="background:${COLORS[c].hex}"></div>`).join('');
+    card.innerHTML = `
+      <div class="dir-avatar">${inits(p.name)}</div>
+      <div class="dir-info">
+        <div class="dir-name" style="${nameStyle(p.colors)}">${p.name}</div>
+        <div class="dir-color" style="color:var(--vit-gray)">${colorLabel(p.colors)}</div>
+      </div>
+      <div class="dir-swatch">${swatches}</div>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+// Search
+document.getElementById('search-input').addEventListener('input', e => {
+  const q = e.target.value.toLowerCase();
+  document.querySelectorAll('.dir-card').forEach(c => {
+    c.style.display = c.dataset.search.includes(q) ? '' : 'none';
+  });
+});
+
+// Build color bars
+function buildBars() {
+  const container = document.getElementById('color-bars');
+  const data = [
+    { color: 'Green', count: 15 },
+    { color: 'Blue', count: 10 },
+    { color: 'Red', count: 7 },
+    { color: 'Yellow', count: 7 },
+  ];
+  data.forEach(d => {
+    const pct = Math.round(d.count / 24 * 100);
+    const row = document.createElement('div');
+    row.className = 'bar-row';
+    row.innerHTML = `
+      <div class="bar-label" style="color:${COLORS[d.color].hex}">${d.color}</div>
+      <div class="bar-track">
+        <div class="bar-fill" style="width:0%;background:${COLORS[d.color].hex}">${d.count}</div>
+      </div>
+    `;
+    container.appendChild(row);
+    requestAnimationFrame(() => {
+      setTimeout(() => { row.querySelector('.bar-fill').style.width = pct + '%'; }, 200);
+    });
+  });
+}
+
+// Modal
+function openModal(name) {
+  const p = PEOPLE.find(x => x.name === name);
+  if (!p) return;
+  const overlay = document.getElementById('modal-overlay');
+  const modal = document.getElementById('modal-content');
+
+  const allColors = ['Red','Blue','Green','Yellow'];
+  const swatches = allColors.map(c => {
+    const isActive = p.colors.includes(c);
+    const style = isActive
+      ? `background:${COLORS[c].hex};color:white;border:2px solid ${COLORS[c].hex}`
+      : `background:var(--vit-light);color:#C8CDD5;border:2px solid var(--vit-border)`;
+    const check = isActive ? '&#10003;' : '';
+    return `<div class="modal-swatch" style="${style}">${check}<span class="swatch-label" style="color:${isActive ? COLORS[c].hex : '#C8CDD5'}">${c}</span></div>`;
+  }).join('');
+
+  const allTraits = p.colors.flatMap(c => COLORS[c].traits);
+  const traitColor = p.colors.length === 1 ? COLORS[p.colors[0]].hex : 'var(--vit-navy)';
+  const traitBg = p.colors.length === 1 ? COLORS[p.colors[0]].bg : 'var(--vit-light)';
+  const traits = allTraits.map(t => `<span class="modal-trait" style="background:${traitBg};color:${traitColor}">${t}</span>`).join('');
+
+  const tips = p.colors.map(c => COLORS[c].tip);
+  const tipHtml = tips.length === 1
+    ? `<strong>How to work with ${p.name}:</strong> ${tips[0]}`
+    : `<strong>How to work with ${p.name}:</strong><br>${tips.map((t,i) => `<span style="color:${COLORS[p.colors[i]].hex};font-weight:600">${p.colors[i]} side:</span> ${t}`).join('<br>')}`;
+
+  const sameGroup = PEOPLE.filter(x => x !== p && sameColors(x.colors, p.colors));
+  const matchHtml = sameGroup.length
+    ? `<br><br><strong>Color twins:</strong> ${sameGroup.map(x => `<span style="${nameStyle(x.colors)};font-weight:700">${x.name}</span>`).join(', ')}`
+    : `<br><br><strong>Unique blend</strong> on the team!`;
+
+  let scoresHtml = '';
+  if (p.scores) {
+    const maxScore = Math.max(...Object.values(p.scores));
+    const scoreRows = ['Green','Red','Blue','Yellow'].map(c => {
+      const val = p.scores[c] || 0;
+      const pct = Math.round(val / maxScore * 100);
+      return `<div class="score-row">
+        <div class="score-label" style="color:${COLORS[c].hex}">${c}</div>
+        <div class="score-track"><div class="score-fill" style="width:${pct}%;background:${COLORS[c].hex}">${val}</div></div>
+      </div>`;
+    }).join('');
+    scoresHtml = `<div class="modal-scores"><h4>Detailed Assessment Scores</h4>${scoreRows}</div>`;
+  }
+
+  modal.innerHTML = `
+    <button class="modal-close" onclick="closeModal()">&#10005;</button>
+    <div class="modal-top">
+      <div class="modal-avatar-big">${inits(p.name)}</div>
+      <div class="modal-person-name" style="${nameStyle(p.colors)}">${p.name}</div>
+      <div class="modal-color-label" style="color:var(--vit-gray)">${colorLabel(p.colors)}</div>
+    </div>
+    <div class="modal-swatches">${swatches}</div>
+    ${scoresHtml}
+    <div class="modal-traits">
+      <h4>Personality Traits</h4>
+      <div class="modal-trait-list">${traits}</div>
+    </div>
+    <div class="modal-tip">${tipHtml}${matchHtml}</div>
+  `;
+  overlay.classList.add('active');
+  document.body.style.overflow = 'hidden';
+  fireConfetti(p.colors);
+}
+
+function closeModal(e) {
+  if (e && e.target !== e.currentTarget) return;
+  document.getElementById('modal-overlay').classList.remove('active');
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+// Confetti with person's colors
+function fireConfetti(colors) {
+  const canvas = document.getElementById('confetti-canvas');
+  const ctx = canvas.getContext('2d');
+  canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+  const palette = colors ? colors.map(c => COLORS[c].hex) : ['#E53935','#1E88E5','#43A047','#F9A825'];
+  palette.push('#FFFFFF', '#1B2A4A');
+  const particles = [];
+  for (let i = 0; i < 50; i++) {
+    particles.push({
+      x: Math.random() * canvas.width, y: -10 - Math.random() * 80,
+      w: 5 + Math.random() * 5, h: 3 + Math.random() * 4,
+      color: palette[Math.floor(Math.random() * palette.length)],
+      vy: 2 + Math.random() * 3, vx: (Math.random() - 0.5) * 2.5,
+      rot: Math.random() * 360, rotS: (Math.random() - 0.5) * 8, life: 1
+    });
+  }
+  let frame;
+  function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    let alive = false;
+    particles.forEach(p => {
+      if (p.life <= 0) return; alive = true;
+      p.x += p.vx; p.y += p.vy; p.rot += p.rotS; p.vy += 0.08;
+      if (p.y > canvas.height * 0.65) p.life -= 0.025;
+      ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.rot * Math.PI / 180);
+      ctx.globalAlpha = p.life; ctx.fillStyle = p.color;
+      ctx.fillRect(-p.w/2, -p.h/2, p.w, p.h); ctx.restore();
+    });
+    if (alive) frame = requestAnimationFrame(animate);
+    else ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
+  cancelAnimationFrame(frame); animate();
+}
+
+// Init
+buildColorKey();
+buildGroups();
+buildDirectory();
+buildBars();
+</script>
+</body>
+</html>
