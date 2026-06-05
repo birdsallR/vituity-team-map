@@ -152,7 +152,7 @@
   <h1>We're <span>Everywhere.</span></h1>
   <p>From the Pacific Coast to New England, our team spans the country. Click any dot to discover where your teammates call home — and what makes their city special.</p>
   <div class="hero-stats">
-    <div class="hero-stat"><div class="num">27</div><div class="lbl">Team Members</div></div>
+    <div class="hero-stat"><div class="num">28</div><div class="lbl">Team Members</div></div>
     <div class="hero-stat"><div class="num">25</div><div class="lbl">Cities</div></div>
     <div class="hero-stat"><div class="num">10</div><div class="lbl">States</div></div>
     <div class="hero-stat"><div class="num">11</div><div class="lbl">In California 🌴</div></div>
@@ -247,7 +247,7 @@ const LOCATIONS = [
     facts:["One of the fastest-growing cities in the entire United States — Celina's population has exploded in just the past decade.","If Celina had an unofficial motto, it would be 'The Sky's the Limit.' The city even uses it on signage around town."]
   },
   { city:"San Francisco, CA",lat:37.774, lon:-122.419, flag:"🌁",
-    members:[{name:"John Hansen",title:"Director of Marketing and PR"}],
+    members:[{name:"John Hansen",title:"Director of Marketing and PR"},{name:"Ryan Birdsall",title:"Sr. Marketing Specialist"}],
     facts:["SF has more restaurants per capita than any other major U.S. city — the food scene is genuinely world-class.","The Golden Gate Bridge was almost painted black with yellow stripes. The distinctive 'International Orange' was just the primer color — and everyone loved it too much to change."]
   },
   { city:"Oshkosh, WI",      lat:44.025, lon:-88.543, flag:"✈️",
@@ -278,9 +278,9 @@ const LOCATIONS = [
     members:[{name:"April Martin",title:"Associate Marketing Manager"}],
     facts:["Home to Lawrence Livermore National Laboratory — one of the most important science and national security research centers in the world since 1952.","California's oldest wine region! Livermore Valley grapes were planted in the 1880s, long before Napa or Sonoma became household names."]
   },
-  { city:"Berkeley, CA",     lat:37.872, lon:-122.273, flag:"📚",
-    members:[{name:"Ryan Birdsall",title:"Sr. Marketing Specialist"}],
-    facts:["Home to UC Berkeley and the birthplace of the Free Speech Movement in 1964 — Berkeley has always marched loudly to its own beat.","The San Francisco sourdough starter culture that Gold Rush miners carried across California in 1849 is still alive in local bakeries today. It's over 175 years old!"]
+  { city:"Green Bay, WI",    lat:44.519, lon:-88.020,  flag:"🏈",
+    members:[{name:"Paul Dax",title:""}],
+    facts:["Home of the Green Bay Packers — the ONLY publicly owned, community-owned, non-profit major professional sports franchise in the entire United States.","Green Bay is officially nicknamed 'Titletown' after the Packers' 13 NFL championships. The whole city bleeds green and gold."]
   },
   { city:"Edinburg, TX",     lat:26.301, lon:-98.163, flag:"🌵",
     members:[{name:"Nicole Lopez",title:"Senior Digital Content Specialist"}],
@@ -350,7 +350,7 @@ function showTip(event, loc) {
   ttBody.innerHTML = loc.members.map(m=>`
     <div class="tt-person">
       <div class="tt-name">${m.name}</div>
-      <div class="tt-title">${m.title}</div>
+      ${m.title ? `<div class="tt-title">${m.title}</div>` : ''}
     </div>`).join('') +
     `<div class="tt-facts">${loc.facts.map(f=>`<div class="tt-fact">${f}</div>`).join('')}</div>`;
 
@@ -373,7 +373,7 @@ function openModal(loc){
       ${loc.members.map(m=>`
         <div class="modal-person">
           <div class="modal-av">${m.name[0]}</div>
-          <div><div class="modal-pname">${m.name}</div><div class="modal-ptitle">${m.title}</div></div>
+          <div><div class="modal-pname">${m.name}</div>${m.title ? `<div class="modal-ptitle">${m.title}</div>` : ''}</div>
         </div>`).join('')}
     </div>
     <div class="modal-facts-label">Fun Facts About ${loc.city.split(',')[0]}</div>
