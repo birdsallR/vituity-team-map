@@ -54,6 +54,22 @@
   #map-wrap { position: relative; background: #eaf0f8; }
   #map-wrap svg { display: block; width: 100%; height: auto; }
 
+  .zoom-controls {
+    position: absolute; bottom: 14px; right: 14px;
+    display: flex; flex-direction: column; gap: 5px; z-index: 10;
+  }
+  .zoom-btn {
+    width: 36px; height: 36px; background: white; border: 1px solid var(--vit-border);
+    border-radius: 9px; cursor: pointer; font-size: 17px; font-weight: 800;
+    display: flex; align-items: center; justify-content: center; line-height: 1;
+    color: var(--vit-navy); transition: all 0.15s;
+    box-shadow: 0 2px 8px rgba(27,42,74,0.10); user-select: none;
+  }
+  .zoom-btn:hover { background: var(--vit-orange); color: white; border-color: var(--vit-orange-dark); }
+  #zoom-ca { width: auto; padding: 0 11px; font-size: 12px; font-weight: 700; background: var(--vit-orange); color: white; border-color: transparent; }
+  #zoom-ca:hover { background: var(--vit-orange-dark); }
+  .zoom-hint { position: absolute; bottom: 14px; left: 14px; font-size: 11px; color: var(--vit-gray); background: rgba(255,255,255,0.85); padding: 5px 10px; border-radius: 8px; pointer-events: none; }
+
   .state { fill: #dde6f1; stroke: #fff; stroke-width: 1; transition: fill 0.15s; }
 
   .team-dot-group { cursor: pointer; }
@@ -169,7 +185,15 @@
         <span style="font-style:italic;font-size:11px">Click any dot to explore!</span>
       </div>
     </div>
-    <div id="map-wrap"></div>
+    <div id="map-wrap">
+      <div class="zoom-controls">
+        <button class="zoom-btn" id="zoom-ca" title="Zoom to California">🌴 CA</button>
+        <button class="zoom-btn" id="zoom-in"    title="Zoom in">+</button>
+        <button class="zoom-btn" id="zoom-out"   title="Zoom out">−</button>
+        <button class="zoom-btn" id="zoom-reset" title="Reset view">⊙</button>
+      </div>
+      <div class="zoom-hint">Scroll or pinch to zoom &nbsp;·&nbsp; Drag to pan</div>
+    </div>
   </div>
 </section>
 
@@ -388,44 +412,73 @@ document.addEventListener('keydown',e=>{ if(e.key==='Escape') overlay.classList.
 
 // ── D3 Map ────────────────────────────────────────────────
 const W=960, H=560;
+const DOT_R = {single:10, multi:14};
+const PULSE_R = {single:12, multi:16};
+let currentK = 1;
 
 const svg = d3.select('#map-wrap').append('svg')
   .attr('viewBox',`0 0 ${W} ${H}`)
-  .attr('preserveAspectRatio','xMidYMid meet');
+  .attr('preserveAspectRatio','xMidYMid meet')
+  .style('cursor','grab');
 
-// Light ocean background
+// Ocean background stays outside zoom group
 svg.append('rect').attr('width',W).attr('height',H).attr('fill','#dde9f5');
 
 const proj = d3.geoAlbersUsa().scale(1150).translate([W/2, H/2]);
 const path = d3.geoPath().projection(proj);
 
-let activeCity = null;
+// All zoomable content lives here
+const mapGroup = svg.append('g');
+
+// Zoom behavior
+const zoomBehavior = d3.zoom()
+  .scaleExtent([1, 10])
+  .on('start', ()=> svg.style('cursor','grabbing'))
+  .on('end',   ()=> svg.style('cursor','grab'))
+  .on('zoom',  (event)=>{
+    mapGroup.attr('transform', event.transform);
+    currentK = event.transform.k;
+    // Keep dots the same visual size regardless of zoom level
+    svg.selectAll('.dot-main').attr('r', d=> (d.members.length>1 ? DOT_R.multi : DOT_R.single) / currentK);
+    svg.selectAll('.pulse-ring').attr('r', d=> (d.members.length>1 ? PULSE_R.multi : PULSE_R.single) / currentK);
+    svg.selectAll('.dot-label').style('font-size', `${9/currentK}px`);
+  });
+
+svg.call(zoomBehavior);
+svg.on('dblclick.zoom', null); // prevent accidental double-click zoom
+
+// Zoom control functions
+function zoomBy(factor){
+  svg.transition().duration(300).call(zoomBehavior.scaleBy, factor);
+}
+function resetZoom(){
+  svg.transition().duration(600).call(zoomBehavior.transform, d3.zoomIdentity);
+}
+function zoomToCA(){
+  // Center on Central California
+  const c = proj([-119.5, 37.5]);
+  if(!c) return;
+  const k = 4;
+  svg.transition().duration(750)
+    .call(zoomBehavior.transform, d3.zoomIdentity.translate(W/2 - k*c[0], H/2 - k*c[1]).scale(k));
+}
+
+document.getElementById('zoom-in').addEventListener('click',    ()=> zoomBy(1.6));
+document.getElementById('zoom-out').addEventListener('click',   ()=> zoomBy(1/1.6));
+document.getElementById('zoom-reset').addEventListener('click', resetZoom);
+document.getElementById('zoom-ca').addEventListener('click',    zoomToCA);
 
 d3.json('https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json').then(us=>{
-  const states   = topojson.feature(us, us.objects.states);
-  const borders  = topojson.mesh(us, us.objects.states, (a,b)=>a!==b);
-  const nation   = topojson.feature(us, us.objects.nation);
+  const states  = topojson.feature(us, us.objects.states);
+  const borders = topojson.mesh(us, us.objects.states, (a,b)=>a!==b);
+  const nation  = topojson.feature(us, us.objects.nation);
 
-  // Nation fill
-  svg.append('path').datum(nation)
-    .attr('fill','#e8eff8').attr('d',path);
+  mapGroup.append('path').datum(nation).attr('fill','#e8eff8').attr('d',path);
+  mapGroup.selectAll('.state').data(states.features).enter().append('path').attr('class','state').attr('d',path);
+  mapGroup.append('path').datum(borders).attr('fill','none').attr('stroke','#c8d8eb').attr('stroke-width',0.8).attr('d',path);
+  mapGroup.append('path').datum(nation).attr('fill','none').attr('stroke','#aabbd4').attr('stroke-width',1.5).attr('d',path);
 
-  // State fills
-  svg.selectAll('.state').data(states.features).enter()
-    .append('path').attr('class','state').attr('d',path);
-
-  // State borders
-  svg.append('path').datum(borders)
-    .attr('fill','none').attr('stroke','#c8d8eb').attr('stroke-width',0.8)
-    .attr('d',path);
-
-  // Nation outline
-  svg.append('path').datum(nation)
-    .attr('fill','none').attr('stroke','#aabbd4').attr('stroke-width',1.5)
-    .attr('d',path);
-
-  // Place dots
-  const dotGroups = svg.selectAll('.team-dot-group')
+  const dotGroups = mapGroup.selectAll('.team-dot-group')
     .data(LOCATIONS).enter()
     .append('g').attr('class','team-dot-group')
     .attr('transform', d=>{
@@ -433,21 +486,17 @@ d3.json('https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json').then(us=>{
       return c ? `translate(${c[0]},${c[1]})` : 'translate(-999,-999)';
     });
 
-  // Pulse ring
   dotGroups.append('circle')
     .attr('class','pulse-ring active')
-    .attr('r', d=> d.members.length>1 ? 16 : 12);
+    .attr('r', d=> d.members.length>1 ? PULSE_R.multi : PULSE_R.single);
 
-  // Main dot
   dotGroups.append('circle')
     .attr('class', d=>'dot-main '+(d.members.length>1?'dot-multi':'dot-single'))
-    .attr('r', d=> d.members.length>1 ? 14 : 10);
+    .attr('r', d=> d.members.length>1 ? DOT_R.multi : DOT_R.single);
 
-  // Count label for multi-person cities
   dotGroups.filter(d=>d.members.length>1)
     .append('text').attr('class','dot-label').text(d=>d.members.length);
 
-  // Events
   dotGroups
     .on('mouseover', (ev,d)=>{ showTip(ev,d); })
     .on('mousemove', (ev,d)=>{ showTip(ev,d); })
