@@ -71,6 +71,10 @@
   .card-appreciation .card-icon .heart-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; }
   .card-appreciation .card-icon .heart-grid span { font-size: 15px; text-align: center; }
 
+  .card-locations::after { background: linear-gradient(90deg, #F26522, #e55a15, #FDDECE, #F26522); }
+  .card-locations .card-icon { background: #FFF0E8; }
+  .card-locations .card-icon .map-pins { font-size: 32px; line-height: 1; }
+
   .team-count { display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 8px; background: var(--vit-light); font-size: 13px; font-weight: 600; color: var(--vit-gray); margin-bottom: 16px; }
 
   footer { text-align: center; padding: 24px; color: var(--vit-gray); font-size: 13px; border-top: 1px solid var(--vit-border); background: var(--vit-white); }
@@ -133,6 +137,17 @@
       <div class="team-count">18 team members</div>
       <div class="card-desc">Learn how each teammate prefers to be recognized &mdash; Words of Affirmation, Quality Time, Acts of Service, or Tangible Gifts &mdash; so your thanks always lands.</div>
       <div class="card-cta">Explore Languages <span class="arrow">&rarr;</span></div>
+    </a>
+    <a class="landing-card card-locations" href="locations.html">
+      <div class="card-icon">
+        <div class="map-pins">
+          <span>📍</span>
+        </div>
+      </div>
+      <div class="card-title">Where We Live</div>
+      <div class="team-count">27 team members &middot; 25 cities</div>
+      <div class="card-desc">Explore the interactive map of where your teammates call home &mdash; from the Pacific Coast to New England &mdash; and discover fun facts about each city.</div>
+      <div class="card-cta">Explore the Map <span class="arrow">&rarr;</span></div>
     </a>
   </div>
 </section>

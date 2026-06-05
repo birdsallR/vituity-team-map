@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vituity Marketing Team | Where We Live</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --vit-orange: #F26522; --vit-orange-dark: #d9551a; --vit-orange-light: #FFF0E8; --vit-orange-mid: #FDDECE;
+    --vit-navy: #1B2A4A; --vit-navy-light: #2D4470;
+    --vit-light: #F7F8FC; --vit-white: #FFFFFF; --vit-border: #E8ECF2;
+    --vit-gray: #718096; --vit-shadow: 0 2px 12px rgba(27,42,74,0.06);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Inter', sans-serif; background: var(--vit-light); color: var(--vit-navy); min-height: 100vh; display: flex; flex-direction: column; }
+
+  nav { background: var(--vit-white); border-bottom: 1px solid var(--vit-border); padding: 0 24px; position: sticky; top: 0; z-index: 50; }
+  .nav-inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; height: 64px; gap: 8px; }
+  .nav-brand { display: flex; align-items: center; gap: 12px; font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 800; font-size: 20px; color: var(--vit-navy); text-decoration: none; }
+  .nav-logo { width: 36px; height: 36px; background: var(--vit-orange); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white; font-size: 18px; font-weight: 800; }
+  .nav-links { display: flex; gap: 4px; margin-left: 20px; flex-wrap: wrap; }
+  .nav-link { font-size: 13px; font-weight: 500; color: var(--vit-gray); text-decoration: none; padding: 6px 10px; border-radius: 8px; transition: all 0.2s; }
+  .nav-link:hover { background: var(--vit-orange-light); color: var(--vit-orange); }
+  .nav-link.active { background: var(--vit-orange-light); color: var(--vit-orange); font-weight: 600; }
+
+  .hero {
+    background: linear-gradient(150deg, #fff8f4 0%, #fff4ed 40%, #ffeedd 100%);
+    padding: 64px 24px 56px; text-align: center;
+    border-bottom: 3px solid var(--vit-orange-mid);
+    position: relative; overflow: hidden;
+  }
+  .hero::before { content: '🗺️'; position: absolute; font-size: 260px; opacity: 0.05; right: 2%; top: -40px; transform: rotate(10deg); pointer-events: none; }
+  .hero::after { content: '📍'; position: absolute; font-size: 140px; opacity: 0.06; left: 3%; bottom: -30px; transform: rotate(-8deg); pointer-events: none; }
+  .hero-sub { font-size: 12px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; color: var(--vit-orange); margin-bottom: 14px; }
+  .hero h1 { font-family: 'Plus Jakarta Sans', sans-serif; font-size: clamp(2.2rem, 5vw, 3.4rem); font-weight: 800; color: var(--vit-navy); margin-bottom: 14px; line-height: 1.1; }
+  .hero h1 span { color: var(--vit-orange); }
+  .hero p { font-size: 16px; color: var(--vit-gray); max-width: 540px; margin: 0 auto 28px; line-height: 1.7; }
+  .hero-stats { display: inline-flex; gap: 0; background: white; border-radius: 20px; border: 1px solid var(--vit-border); box-shadow: 0 4px 20px rgba(242,101,34,0.08); overflow: hidden; }
+  .hero-stat { padding: 16px 28px; text-align: center; border-right: 1px solid var(--vit-border); }
+  .hero-stat:last-child { border-right: none; }
+  .hero-stat .num { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 30px; font-weight: 800; color: var(--vit-orange); line-height: 1; margin-bottom: 4px; }
+  .hero-stat .lbl { font-size: 11px; font-weight: 600; color: var(--vit-gray); text-transform: uppercase; letter-spacing: 0.5px; }
+
+  .map-section { max-width: 1200px; margin: 40px auto 0; padding: 0 24px; width: 100%; }
+  .map-container { background: var(--vit-white); border-radius: 24px; border: 1px solid var(--vit-border); box-shadow: 0 4px 24px rgba(27,42,74,0.07); overflow: hidden; }
+  .map-header { padding: 18px 28px; border-bottom: 1px solid var(--vit-border); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
+  .map-header h2 { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 17px; font-weight: 700; }
+  .map-legend { display: flex; gap: 16px; font-size: 12px; color: var(--vit-gray); align-items: center; }
+  .leg-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; margin-right: 4px; vertical-align: middle; }
+  .leg-orange { background: var(--vit-orange); }
+  .leg-navy { background: var(--vit-navy); }
+
+  #map-wrap { position: relative; background: #eaf0f8; }
+  #map-wrap svg { display: block; width: 100%; height: auto; }
+
+  .state { fill: #dde6f1; stroke: #fff; stroke-width: 1; transition: fill 0.15s; }
+
+  .team-dot-group { cursor: pointer; }
+  .pulse-ring { fill: var(--vit-orange); fill-opacity: 0; stroke: var(--vit-orange); stroke-width: 2; stroke-opacity: 0; transform-origin: center; }
+  .pulse-ring.active { animation: ringPulse 2.2s ease-out infinite; }
+  @keyframes ringPulse {
+    0%   { transform: scale(0.8); stroke-opacity: 0.7; fill-opacity: 0.15; }
+    100% { transform: scale(2.8); stroke-opacity: 0; fill-opacity: 0; }
+  }
+  .dot-main { stroke: white; stroke-width: 2; transition: transform 0.15s; transform-origin: center; }
+  .dot-single { fill: var(--vit-orange); }
+  .dot-multi  { fill: var(--vit-navy); }
+  .team-dot-group:hover .dot-main { transform: scale(1.35); filter: drop-shadow(0 0 6px rgba(242,101,34,0.55)); }
+  .dot-label { fill: white; font-family: 'Inter', sans-serif; font-size: 9px; font-weight: 800; text-anchor: middle; dominant-baseline: central; pointer-events: none; }
+  .dot-highlighted .dot-main { transform: scale(1.5); filter: drop-shadow(0 0 10px rgba(242,101,34,0.8)); }
+
+  /* Fixed tooltip follows mouse */
+  #tooltip {
+    position: fixed; background: white; border-radius: 16px; pointer-events: none;
+    box-shadow: 0 8px 32px rgba(27,42,74,0.18); min-width: 240px; max-width: 300px;
+    border: 1px solid var(--vit-border); z-index: 500; opacity: 0;
+    transform: translateY(6px); transition: opacity 0.15s, transform 0.15s; overflow: hidden;
+  }
+  #tooltip.show { opacity: 1; transform: translateY(0); }
+  .tt-head { background: var(--vit-orange); padding: 11px 14px; }
+  .tt-city { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 13px; font-weight: 700; color: white; }
+  .tt-body { padding: 12px 14px; }
+  .tt-person { margin-bottom: 8px; padding-bottom: 8px; border-bottom: 1px solid var(--vit-border); }
+  .tt-person:last-of-type { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+  .tt-name { font-size: 12px; font-weight: 700; color: var(--vit-navy); }
+  .tt-title { font-size: 11px; color: var(--vit-gray); }
+  .tt-facts { background: var(--vit-orange-light); border-radius: 8px; padding: 9px 11px; margin-top: 9px; }
+  .tt-fact { font-size: 11px; color: var(--vit-navy); line-height: 1.5; padding: 2px 0; }
+  .tt-fact + .tt-fact { border-top: 1px solid var(--vit-orange-mid); padding-top: 5px; margin-top: 4px; }
+  .tt-fact::before { content: '✨ '; }
+
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(27,42,74,0.45); backdrop-filter: blur(5px); z-index: 200; align-items: center; justify-content: center; padding: 20px; }
+  .modal-overlay.open { display: flex; }
+  .modal { background: white; border-radius: 24px; width: 100%; max-width: 460px; box-shadow: 0 24px 64px rgba(27,42,74,0.22); overflow: hidden; animation: mIn 0.28s ease; }
+  @keyframes mIn { from { opacity:0; transform:translateY(24px) scale(0.95); } }
+  .modal-head { background: linear-gradient(135deg, var(--vit-orange), var(--vit-orange-dark)); padding: 28px 28px 22px; position: relative; }
+  .modal-close { position: absolute; top: 18px; right: 18px; background: rgba(255,255,255,0.22); border: none; color: white; width: 30px; height: 30px; border-radius: 50%; cursor: pointer; font-size: 14px; display: flex; align-items: center; justify-content: center; transition: background 0.2s; }
+  .modal-close:hover { background: rgba(255,255,255,0.38); }
+  .modal-lbl { font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.75); margin-bottom: 5px; }
+  .modal-city-name { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 26px; font-weight: 800; color: white; }
+  .modal-flag { position: absolute; right: 56px; top: 18px; font-size: 36px; }
+  .modal-body { padding: 22px 28px 28px; }
+  .modal-people { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+  .modal-person { display: flex; align-items: center; gap: 12px; background: var(--vit-light); border-radius: 12px; padding: 12px; }
+  .modal-av { width: 40px; height: 40px; border-radius: 11px; background: var(--vit-orange); display: flex; align-items: center; justify-content: center; font-family: 'Plus Jakarta Sans', sans-serif; font-size: 17px; font-weight: 800; color: white; flex-shrink: 0; }
+  .modal-pname { font-size: 14px; font-weight: 700; color: var(--vit-navy); }
+  .modal-ptitle { font-size: 11px; color: var(--vit-gray); margin-top: 2px; }
+  .modal-facts-label { font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--vit-orange); margin-bottom: 10px; }
+  .modal-fact { border-left: 3px solid var(--vit-orange); background: var(--vit-orange-light); border-radius: 0 10px 10px 0; padding: 11px 14px; margin-bottom: 8px; font-size: 13px; color: var(--vit-navy); line-height: 1.6; }
+
+  .roster-section { max-width: 1200px; margin: 36px auto 52px; padding: 0 24px; }
+  .roster-title { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 20px; font-weight: 700; margin-bottom: 4px; }
+  .roster-sub { font-size: 13px; color: var(--vit-gray); margin-bottom: 18px; }
+  .roster-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; }
+  .roster-card { background: white; border: 1px solid var(--vit-border); border-radius: 13px; padding: 12px 14px; cursor: pointer; transition: all 0.18s; display: flex; align-items: center; gap: 10px; }
+  .roster-card:hover, .roster-card.hl { border-color: var(--vit-orange); background: var(--vit-orange-light); transform: translateY(-2px); box-shadow: 0 4px 14px rgba(242,101,34,0.1); }
+  .r-av { width: 34px; height: 34px; border-radius: 9px; background: var(--vit-orange); display: flex; align-items: center; justify-content: center; font-family: 'Plus Jakarta Sans', sans-serif; font-size: 14px; font-weight: 800; color: white; flex-shrink: 0; }
+  .r-name { font-size: 12px; font-weight: 700; color: var(--vit-navy); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .r-city { font-size: 11px; color: var(--vit-gray); }
+
+  #confetti-canvas { position: fixed; inset: 0; pointer-events: none; z-index: 999; }
+
+  footer { text-align: center; padding: 24px; color: var(--vit-gray); font-size: 13px; border-top: 1px solid var(--vit-border); background: white; }
+
+  @media (max-width: 600px) {
+    .hero-stats { flex-direction: column; gap: 0; }
+    .hero-stat { border-right: none; border-bottom: 1px solid var(--vit-border); }
+    .hero-stat:last-child { border-bottom: none; }
+    .nav-links { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<canvas id="confetti-canvas"></canvas>
+
+<nav>
+  <div class="nav-inner">
+    <a class="nav-brand" href="index.html"><div class="nav-logo">V</div>Marketing Team</a>
+    <div class="nav-links">
+      <a class="nav-link" href="widget.html">Working Genius</a>
+      <a class="nav-link" href="colorwheel.html">Color Wheel</a>
+      <a class="nav-link" href="appreciation.html">Appreciation</a>
+      <a class="nav-link active" href="locations.html">Where We Live</a>
+    </div>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-sub">Vituity Marketing Team</div>
+  <h1>We're <span>Everywhere.</span></h1>
+  <p>From the Pacific Coast to New England, our team spans the country. Click any dot to discover where your teammates call home — and what makes their city special.</p>
+  <div class="hero-stats">
+    <div class="hero-stat"><div class="num">27</div><div class="lbl">Team Members</div></div>
+    <div class="hero-stat"><div class="num">25</div><div class="lbl">Cities</div></div>
+    <div class="hero-stat"><div class="num">10</div><div class="lbl">States</div></div>
+    <div class="hero-stat"><div class="num">11</div><div class="lbl">In California 🌴</div></div>
+  </div>
+</section>
+
+<section class="map-section">
+  <div class="map-container">
+    <div class="map-header">
+      <h2>📍 Team Headquarters: Everywhere</h2>
+      <div class="map-legend">
+        <span><span class="leg-dot leg-orange"></span>1 person</span>
+        <span><span class="leg-dot leg-navy"></span>2+ people</span>
+        <span style="font-style:italic;font-size:11px">Click any dot to explore!</span>
+      </div>
+    </div>
+    <div id="map-wrap"></div>
+  </div>
+</section>
+
+<section class="roster-section">
+  <div class="roster-title">Find Your Teammate</div>
+  <div class="roster-sub">Click any card to open their city on the map.</div>
+  <div class="roster-grid" id="roster-grid"></div>
+</section>
+
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal">
+    <div class="modal-head">
+      <button class="modal-close" id="modal-close">✕</button>
+      <div class="modal-lbl">Hometown</div>
+      <div class="modal-city-name" id="modal-city"></div>
+      <div class="modal-flag" id="modal-flag"></div>
+    </div>
+    <div class="modal-body" id="modal-body"></div>
+  </div>
+</div>
+
+<div id="tooltip">
+  <div class="tt-head"><div class="tt-city" id="tt-city"></div></div>
+  <div class="tt-body" id="tt-body"></div>
+</div>
+
+<footer>Built for the Vituity Marketing Team</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3/dist/topojson-client.min.js"></script>
+<script>
+const LOCATIONS = [
+  { city:"Apex, NC",         lat:35.73,  lon:-78.85,  flag:"🍑",
+    members:[{name:"Erin Edwards",title:"CMO"},{name:"Nathan Stanley",title:"Senior Director, Marketing"}],
+    facts:["Named one of Money Magazine's 'Best Places to Live' multiple times — and it earns the title every year!","The name 'Apex' comes from its position as the highest elevation point on the historic Chatham Railroad line."]
+  },
+  { city:"Sacramento, CA",   lat:38.58,  lon:-121.49, flag:"🌾",
+    members:[{name:"Adam Kaszycki",title:"Director, Creative Services"},{name:"Daisee Chau",title:"Marketing Data Specialist"}],
+    facts:["The self-proclaimed 'Farm-to-Fork Capital of America' — the local food scene is obsessively hyper-seasonal.","Sacramento reportedly has more trees per capita than nearly any city on earth. It's basically a giant forest with streets in it."]
+  },
+  { city:"Wilmington, DE",   lat:39.74,  lon:-75.55,  flag:"🦅",
+    members:[{name:"Lisa Meitzler",title:"Senior Marketing Manager"}],
+    facts:["More than half of all U.S. Fortune 500 companies are legally incorporated in Delaware — it's the corporate capital of the world.","Wilmington's Riverfront along the Christina River is one of the most walkable and revitalized urban waterfronts on the East Coast."]
+  },
+  { city:"Roseville, CA",    lat:38.752, lon:-121.288, flag:"🌹",
+    members:[{name:"Olivia Jones",title:"Manager, Creative Services"}],
+    facts:["Named after a rose garden that no longer exists — the flowers are long gone but the name (and charm) stuck forever.","A major transcontinental railroad hub since the 1860s, Roseville has quietly been one of California's most strategically important cities."]
+  },
+  { city:"Albany, CA",       lat:37.887, lon:-122.298, flag:"🌉",
+    members:[{name:"Tenzin Norsang",title:"Graphic Designer"}],
+    facts:["Tiny but mighty — Albany is only 1.8 square miles, yet it consistently ranks among the Bay Area's most vibrant communities.","The Albany Bulb is a wild, magical public art park built on a former landfill that juts into San Francisco Bay. Pure Bay Area energy."]
+  },
+  { city:"Chicago Park, CA", lat:39.061, lon:-120.893, flag:"🌲",
+    members:[{name:"Angela Holm",title:"Video Producer"}],
+    facts:["A peaceful Sierra Nevada foothills community in Nevada County, sitting at around 2,000 feet elevation amid towering pines.","More deer and bears than stoplights — this is quintessential Northern California mountain living at its finest."]
+  },
+  { city:"Austin, TX",       lat:30.267, lon:-97.743, flag:"🎸",
+    members:[{name:"Adrian Navarro",title:"Senior Motion Designer"}],
+    facts:["The 'Live Music Capital of the World' — Austin has over 250 live music venues packed into a single city.","The Congress Avenue Bridge is home to 1.5 million Mexican free-tailed bats, making it the largest urban bat colony on the entire continent."]
+  },
+  { city:"Portland, OR",     lat:45.523, lon:-122.676, flag:"🌹",
+    members:[{name:"Kelly Tremper",title:"Director, Product Marketing"}],
+    facts:["Portland has more food carts per capita than any other U.S. city — it's a serious, world-class culinary destination on wheels.","Mill Ends Park, a 2-foot-diameter circle of land in a median, holds the Guinness World Record for the world's smallest park."]
+  },
+  { city:"Carbondale, IL",   lat:37.727, lon:-89.216, flag:"🌑",
+    members:[{name:"Soo Jin Edwards",title:"Consumer Marketing Manager"}],
+    facts:["Carbondale was in the path of totality for BOTH the 2017 and 2024 solar eclipses — earning it the official nickname 'Eclipse Crossroads of America.'","Located in the heart of 'Little Egypt,' a culturally rich swath of southern Illinois with its own distinct identity and history."]
+  },
+  { city:"West Frankfort, IL",lat:37.898, lon:-88.928, flag:"⛏️",
+    members:[{name:"Kayla Lazorchak",title:"Senior Consumer Marketing Specialist"}],
+    facts:["A proud southern Illinois town with deep coal mining roots — the kind of place where community history runs bone-deep.","Just a short drive from Shawnee National Forest's 'Garden of the Gods,' one of the most breathtaking landscapes in the entire Midwest."]
+  },
+  { city:"Celina, TX",       lat:33.325, lon:-96.785, flag:"🚀",
+    members:[{name:"Peyton Dustin",title:"Customer Engagement Specialist"}],
+    facts:["One of the fastest-growing cities in the entire United States — Celina's population has exploded in just the past decade.","If Celina had an unofficial motto, it would be 'The Sky's the Limit.' The city even uses it on signage around town."]
+  },
+  { city:"San Francisco, CA",lat:37.774, lon:-122.419, flag:"🌁",
+    members:[{name:"John Hansen",title:"Director of Marketing and PR"}],
+    facts:["SF has more restaurants per capita than any other major U.S. city — the food scene is genuinely world-class.","The Golden Gate Bridge was almost painted black with yellow stripes. The distinctive 'International Orange' was just the primer color — and everyone loved it too much to change."]
+  },
+  { city:"Oshkosh, WI",      lat:44.025, lon:-88.543, flag:"✈️",
+    members:[{name:"Daisy Wakefield",title:"Internal Communications Senior Manager"}],
+    facts:["Home to EAA AirVenture, the world's largest airshow — over 600,000 aviation fans descend on Oshkosh every summer.","OshKosh B'gosh, the iconic kids' clothing brand, was literally invented here. The city's workwear heritage lives on in every pair of overalls."]
+  },
+  { city:"Denver, CO",       lat:39.742, lon:-104.984, flag:"🏔️",
+    members:[{name:"Sarah Maurer",title:"Marketing Writer"}],
+    facts:["The 'Mile High City' enjoys 300 days of sunshine per year — more than Miami or Honolulu. Denver wins the weather war.","The Colorado State Capitol dome is covered in real gold leaf, mined directly from Colorado's own mountains. Very extra."]
+  },
+  { city:"Cameron Park, CA", lat:38.672, lon:-121.011, flag:"🌄",
+    members:[{name:"Kristen Bowyer",title:"Senior Communications & Marketing Specialist"}],
+    facts:["A beautiful El Dorado County community in the Sierra Nevada foothills, known for its lakes, rolling hills, and fresh mountain air.","Cameron Park sits along the original Lincoln Highway — America's very first transcontinental road, running coast to coast since 1913."]
+  },
+  { city:"Media, PA",        lat:39.917, lon:-75.388, flag:"🚃",
+    members:[{name:"Lisa Liebman",title:"Senior Director, Marketing"}],
+    facts:["The ONLY town in America with completely free trolley service — the Media-Sharon Hill Line has been running through downtown since 1858.","Media's walkable State Street calls itself 'Everybody's Hometown' and has been named one of the best Main Streets in the entire country."]
+  },
+  { city:"Oakland, CA",      lat:37.804, lon:-122.271, flag:"🌳",
+    members:[{name:"Julia Ogburn",title:"Senior Manager, Marketing"}],
+    facts:["Oakland has more artists per capita than almost anywhere in the U.S. — it's one of America's great creative cities.","Fun fact: over 40% of California's imported cargo passes through the Port of Oakland. If it comes to the West Coast, it probably touched Oakland first."]
+  },
+  { city:"Pleasant Hill, CA",lat:37.948, lon:-122.062, flag:"☀️",
+    members:[{name:"Molly Maxwell",title:"Digital Content Manager"}],
+    facts:["Set against sweeping Mt. Diablo views, Pleasant Hill is known for tree-lined streets and a genuinely welcoming community vibe.","The Iron Horse Trail runs right through town — a beloved 32-mile multi-use path that follows an old railroad corridor through the entire East Bay."]
+  },
+  { city:"Livermore, CA",    lat:37.682, lon:-121.768, flag:"🍷",
+    members:[{name:"April Martin",title:"Associate Marketing Manager"}],
+    facts:["Home to Lawrence Livermore National Laboratory — one of the most important science and national security research centers in the world since 1952.","California's oldest wine region! Livermore Valley grapes were planted in the 1880s, long before Napa or Sonoma became household names."]
+  },
+  { city:"Berkeley, CA",     lat:37.872, lon:-122.273, flag:"📚",
+    members:[{name:"Ryan Birdsall",title:"Sr. Marketing Specialist"}],
+    facts:["Home to UC Berkeley and the birthplace of the Free Speech Movement in 1964 — Berkeley has always marched loudly to its own beat.","The San Francisco sourdough starter culture that Gold Rush miners carried across California in 1849 is still alive in local bakeries today. It's over 175 years old!"]
+  },
+  { city:"Edinburg, TX",     lat:26.301, lon:-98.163, flag:"🌵",
+    members:[{name:"Nicole Lopez",title:"Senior Digital Content Specialist"}],
+    facts:["The heart of the Rio Grande Valley — a sun-drenched region known for 300+ days of sunshine annually and exceptional local citrus.","Home to UTRGV, a rapidly growing research university that's quietly become a major hub for innovation in South Texas."]
+  },
+  { city:"Katy, TX",         lat:29.786, lon:-95.824, flag:"🌾",
+    members:[{name:"Natalie Perez",title:"Marketing Admin Coordinator"}],
+    facts:["Katy's annual Rice Festival is a beloved local tradition — the area was historically one of the premier rice-growing regions in all of Texas.","One of the fastest-growing communities in the greater Houston metro, with incredible cultural diversity and serious suburban energy."]
+  },
+  { city:"Huntersville, NC", lat:35.411, lon:-80.843, flag:"⛵",
+    members:[{name:"Michelle Pierce",title:"Digital Marketing Manager, MOOV"}],
+    facts:["Situated right on the shores of Lake Norman — 'The Inland Sea of the Carolinas' — with an incredible 520-mile shoreline to explore.","Huntersville grew from roughly 3,000 residents in 1990 to over 65,000 today. One of the most dramatic growth stories in the American South."]
+  },
+  { city:"Mansfield, MA",    lat:42.033, lon:-71.219, flag:"🎶",
+    members:[{name:"Devin Kincade",title:"Media and Thought Leadership Manager"}],
+    facts:["Home to Xfinity Center, one of New England's most legendary outdoor concert venues — summer nights here are iconic.","Mansfield sits at the crossroads of southeastern Massachusetts' rich colonial and cranberry farming history. Classic New England."]
+  },
+  { city:"Concord, CA",      lat:37.978, lon:-122.031, flag:"🎷",
+    members:[{name:"Trisha Victorio",title:"Videographer"}],
+    facts:["Birthplace of Lynn Anderson, the country music legend behind 'Rose Garden' — one of the best-selling country singles of all time.","Home to the world-famous Concord Jazz Festival — one of the most important events in American jazz history, running since 1969."]
+  }
+];
+
+// ── Confetti ──────────────────────────────────────────────
+const cCanvas = document.getElementById('confetti-canvas');
+const cCtx = cCanvas.getContext('2d');
+let cParts = [];
+function resizeC(){ cCanvas.width = innerWidth; cCanvas.height = innerHeight; }
+resizeC(); addEventListener('resize', resizeC);
+
+function launchConfetti() {
+  const cols = ['#F26522','#d9551a','#fff','#FDDECE','#1B2A4A','#ffb085'];
+  cParts = Array.from({length:90}, () => ({
+    x: Math.random()*cCanvas.width, y:-10,
+    r: Math.random()*7+3,
+    color: cols[Math.floor(Math.random()*cols.length)],
+    speed: Math.random()*3.5+1.5,
+    swing: Math.random()*3-1.5,
+    angle: Math.random()*360,
+    spin: Math.random()*5-2.5,
+    rect: Math.random()>0.5
+  }));
+  animC();
+}
+function animC(){
+  cCtx.clearRect(0,0,cCanvas.width,cCanvas.height);
+  cParts = cParts.filter(p=>p.y<cCanvas.height+20);
+  if(!cParts.length) return;
+  cParts.forEach(p=>{
+    p.y+=p.speed; p.x+=p.swing; p.angle+=p.spin;
+    cCtx.save(); cCtx.translate(p.x,p.y); cCtx.rotate(p.angle*Math.PI/180);
+    cCtx.fillStyle=p.color;
+    if(p.rect){ cCtx.fillRect(-p.r/2,-p.r/2*0.6,p.r,p.r*0.6); }
+    else{ cCtx.beginPath(); cCtx.arc(0,0,p.r/2,0,Math.PI*2); cCtx.fill(); }
+    cCtx.restore();
+  });
+  requestAnimationFrame(animC);
+}
+
+// ── Tooltip ───────────────────────────────────────────────
+const tooltip = document.getElementById('tooltip');
+const ttCity  = document.getElementById('tt-city');
+const ttBody  = document.getElementById('tt-body');
+
+function showTip(event, loc) {
+  ttCity.textContent = loc.flag + ' ' + loc.city;
+  ttBody.innerHTML = loc.members.map(m=>`
+    <div class="tt-person">
+      <div class="tt-name">${m.name}</div>
+      <div class="tt-title">${m.title}</div>
+    </div>`).join('') +
+    `<div class="tt-facts">${loc.facts.map(f=>`<div class="tt-fact">${f}</div>`).join('')}</div>`;
+
+  let x = event.clientX + 14, y = event.clientY + 14;
+  if(x + 300 > innerWidth)  x = event.clientX - 310;
+  if(y + 260 > innerHeight) y = event.clientY - 270;
+  tooltip.style.left = x+'px';
+  tooltip.style.top  = y+'px';
+  tooltip.classList.add('show');
+}
+function hideTip(){ tooltip.classList.remove('show'); }
+
+// ── Modal ─────────────────────────────────────────────────
+const overlay = document.getElementById('modal-overlay');
+function openModal(loc){
+  document.getElementById('modal-city').textContent = loc.city;
+  document.getElementById('modal-flag').textContent = loc.flag;
+  document.getElementById('modal-body').innerHTML = `
+    <div class="modal-people">
+      ${loc.members.map(m=>`
+        <div class="modal-person">
+          <div class="modal-av">${m.name[0]}</div>
+          <div><div class="modal-pname">${m.name}</div><div class="modal-ptitle">${m.title}</div></div>
+        </div>`).join('')}
+    </div>
+    <div class="modal-facts-label">Fun Facts About ${loc.city.split(',')[0]}</div>
+    ${loc.facts.map(f=>`<div class="modal-fact">${f}</div>`).join('')}
+  `;
+  overlay.classList.add('open');
+  launchConfetti();
+}
+document.getElementById('modal-close').addEventListener('click',()=>overlay.classList.remove('open'));
+overlay.addEventListener('click',e=>{ if(e.target===overlay) overlay.classList.remove('open'); });
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') overlay.classList.remove('open'); });
+
+// ── D3 Map ────────────────────────────────────────────────
+const W=960, H=560;
+
+const svg = d3.select('#map-wrap').append('svg')
+  .attr('viewBox',`0 0 ${W} ${H}`)
+  .attr('preserveAspectRatio','xMidYMid meet');
+
+// Light ocean background
+svg.append('rect').attr('width',W).attr('height',H).attr('fill','#dde9f5');
+
+const proj = d3.geoAlbersUsa().scale(1150).translate([W/2, H/2]);
+const path = d3.geoPath().projection(proj);
+
+let activeCity = null;
+
+d3.json('https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json').then(us=>{
+  const states   = topojson.feature(us, us.objects.states);
+  const borders  = topojson.mesh(us, us.objects.states, (a,b)=>a!==b);
+  const nation   = topojson.feature(us, us.objects.nation);
+
+  // Nation fill
+  svg.append('path').datum(nation)
+    .attr('fill','#e8eff8').attr('d',path);
+
+  // State fills
+  svg.selectAll('.state').data(states.features).enter()
+    .append('path').attr('class','state').attr('d',path);
+
+  // State borders
+  svg.append('path').datum(borders)
+    .attr('fill','none').attr('stroke','#c8d8eb').attr('stroke-width',0.8)
+    .attr('d',path);
+
+  // Nation outline
+  svg.append('path').datum(nation)
+    .attr('fill','none').attr('stroke','#aabbd4').attr('stroke-width',1.5)
+    .attr('d',path);
+
+  // Place dots
+  const dotGroups = svg.selectAll('.team-dot-group')
+    .data(LOCATIONS).enter()
+    .append('g').attr('class','team-dot-group')
+    .attr('transform', d=>{
+      const c = proj([d.lon, d.lat]);
+      return c ? `translate(${c[0]},${c[1]})` : 'translate(-999,-999)';
+    });
+
+  // Pulse ring
+  dotGroups.append('circle')
+    .attr('class','pulse-ring active')
+    .attr('r', d=> d.members.length>1 ? 16 : 12);
+
+  // Main dot
+  dotGroups.append('circle')
+    .attr('class', d=>'dot-main '+(d.members.length>1?'dot-multi':'dot-single'))
+    .attr('r', d=> d.members.length>1 ? 14 : 10);
+
+  // Count label for multi-person cities
+  dotGroups.filter(d=>d.members.length>1)
+    .append('text').attr('class','dot-label').text(d=>d.members.length);
+
+  // Events
+  dotGroups
+    .on('mouseover', (ev,d)=>{ showTip(ev,d); })
+    .on('mousemove', (ev,d)=>{ showTip(ev,d); })
+    .on('mouseout',  ()=>{ hideTip(); })
+    .on('click',     (ev,d)=>{ ev.stopPropagation(); openModal(d); });
+});
+
+// ── Roster ────────────────────────────────────────────────
+const rosterGrid = document.getElementById('roster-grid');
+const allMembers = LOCATIONS
+  .flatMap(l=>l.members.map(m=>({...m, city:l.city, flag:l.flag})))
+  .sort((a,b)=>a.name.localeCompare(b.name));
+
+allMembers.forEach(m=>{
+  const card = document.createElement('div');
+  card.className='roster-card';
+  card.dataset.city=m.city;
+  card.innerHTML=`<div class="r-av">${m.name[0]}</div>
+    <div><div class="r-name">${m.name}</div><div class="r-city">${m.flag} ${m.city}</div></div>`;
+  card.addEventListener('click',()=>{
+    const loc=LOCATIONS.find(l=>l.city===m.city);
+    if(loc) openModal(loc);
+  });
+  rosterGrid.appendChild(card);
+});
+</script>
+</body>
+</html>
