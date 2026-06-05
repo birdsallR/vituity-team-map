@@ -70,7 +70,12 @@
   #zoom-ca:hover { background: var(--vit-orange-dark); }
   .zoom-hint { position: absolute; bottom: 14px; left: 14px; font-size: 11px; color: var(--vit-gray); background: rgba(255,255,255,0.85); padding: 5px 10px; border-radius: 8px; pointer-events: none; }
 
-  .state { fill: #dde6f1; stroke: #fff; stroke-width: 1; transition: fill 0.15s; }
+  .state { stroke: #fff; stroke-width: 1; transition: fill 0.15s; }
+
+  .tz-bar { display: flex; align-items: center; gap: 6px; padding: 10px 28px; border-bottom: 1px solid var(--vit-border); flex-wrap: wrap; }
+  .tz-bar-label { font-size: 11px; font-weight: 600; color: var(--vit-gray); text-transform: uppercase; letter-spacing: 1px; margin-right: 4px; }
+  .tz-chip { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; color: var(--vit-navy); padding: 4px 10px; border-radius: 20px; border: 1px solid rgba(0,0,0,0.08); }
+  .tz-chip span { font-size: 10px; font-weight: 500; color: var(--vit-gray); }
 
   .team-dot-group { cursor: pointer; }
   .pulse-ring { fill: var(--vit-orange); fill-opacity: 0; stroke: var(--vit-orange); stroke-width: 2; stroke-opacity: 0; transform-origin: center; pointer-events: none; }
@@ -184,6 +189,13 @@
         <span><span class="leg-dot leg-navy"></span>2+ people</span>
         <span style="font-style:italic;font-size:11px">Click any dot to explore!</span>
       </div>
+    </div>
+    <div class="tz-bar">
+      <span class="tz-bar-label">Timezones</span>
+      <span class="tz-chip" style="background:#c2dff5">PT <span>Pacific</span></span>
+      <span class="tz-chip" style="background:#b8e0c8">MT <span>Mountain</span></span>
+      <span class="tz-chip" style="background:#f5e8a8">CT <span>Central</span></span>
+      <span class="tz-chip" style="background:#dac8ee">ET <span>Eastern</span></span>
     </div>
     <div id="map-wrap">
       <div class="zoom-controls">
@@ -410,6 +422,25 @@ document.getElementById('modal-close').addEventListener('click',()=>overlay.clas
 overlay.addEventListener('click',e=>{ if(e.target===overlay) overlay.classList.remove('open'); });
 document.addEventListener('keydown',e=>{ if(e.key==='Escape') overlay.classList.remove('open'); });
 
+// ── Timezone data (state FIPS → zone) ────────────────────
+const TZ_COLORS = { PT:'#c2dff5', MT:'#b8e0c8', CT:'#f5e8a8', ET:'#dac8ee', AKT:'#cdd8e8', HT:'#f5cfc4' };
+const TZ_MAP = {
+  // Pacific
+  '06':'PT','32':'PT','41':'PT','53':'PT',
+  // Mountain
+  '04':'MT','08':'MT','16':'MT','30':'MT','35':'MT','49':'MT','56':'MT',
+  // Central
+  '01':'CT','05':'CT','17':'CT','19':'CT','20':'CT','22':'CT','27':'CT',
+  '28':'CT','29':'CT','31':'CT','38':'CT','40':'CT','46':'CT','47':'CT','48':'CT','55':'CT',
+  // Eastern
+  '09':'ET','10':'ET','12':'ET','13':'ET','18':'ET','21':'ET','23':'ET',
+  '24':'ET','25':'ET','26':'ET','33':'ET','34':'ET','36':'ET','37':'ET',
+  '39':'ET','42':'ET','44':'ET','45':'ET','50':'ET','51':'ET','54':'ET',
+  // Non-contiguous
+  '02':'AKT','15':'HT',
+};
+function tzColor(fips){ return TZ_COLORS[TZ_MAP[String(fips).padStart(2,'0')]] || '#dde6f1'; }
+
 // ── D3 Map ────────────────────────────────────────────────
 const W=960, H=560;
 const DOT_R = {single:10, multi:14};
@@ -439,8 +470,12 @@ const zoomBehavior = d3.zoom()
     mapGroup.attr('transform', event.transform);
     currentK = event.transform.k;
     // Keep dots the same visual size regardless of zoom level
-    svg.selectAll('.dot-main').attr('r', d=> (d.members.length>1 ? DOT_R.multi : DOT_R.single) / currentK);
-    svg.selectAll('.pulse-ring').attr('r', d=> (d.members.length>1 ? PULSE_R.multi : PULSE_R.single) / currentK);
+    svg.selectAll('.dot-main')
+      .attr('r', d=> (d.members.length>1 ? DOT_R.multi : DOT_R.single) / currentK)
+      .style('stroke-width', (2 / currentK) + 'px');
+    svg.selectAll('.pulse-ring')
+      .attr('r', d=> (d.members.length>1 ? PULSE_R.multi : PULSE_R.single) / currentK)
+      .style('stroke-width', (2 / currentK) + 'px');
     svg.selectAll('.dot-label').style('font-size', `${9/currentK}px`);
   });
 
@@ -474,7 +509,8 @@ d3.json('https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json').then(us=>{
   const nation  = topojson.feature(us, us.objects.nation);
 
   mapGroup.append('path').datum(nation).attr('fill','#e8eff8').attr('d',path);
-  mapGroup.selectAll('.state').data(states.features).enter().append('path').attr('class','state').attr('d',path);
+  mapGroup.selectAll('.state').data(states.features).enter().append('path')
+    .attr('class','state').attr('fill', d=> tzColor(d.id)).attr('d',path);
   mapGroup.append('path').datum(borders).attr('fill','none').attr('stroke','#c8d8eb').attr('stroke-width',0.8).attr('d',path);
   mapGroup.append('path').datum(nation).attr('fill','none').attr('stroke','#aabbd4').attr('stroke-width',1.5).attr('d',path);
 
@@ -501,12 +537,16 @@ d3.json('https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json').then(us=>{
     .on('mouseover', (ev,d)=>{
       showTip(ev,d);
       const base = d.members.length>1 ? DOT_R.multi : DOT_R.single;
-      d3.select(ev.currentTarget).select('.dot-main').attr('r', base * 1.45 / currentK);
+      d3.select(ev.currentTarget).select('.dot-main')
+        .attr('r', base * 1.45 / currentK)
+        .style('stroke-width', (2 / currentK) + 'px');
     })
     .on('mouseout', (ev,d)=>{
       hideTip();
       const base = d.members.length>1 ? DOT_R.multi : DOT_R.single;
-      d3.select(ev.currentTarget).select('.dot-main').attr('r', base / currentK);
+      d3.select(ev.currentTarget).select('.dot-main')
+        .attr('r', base / currentK)
+        .style('stroke-width', (2 / currentK) + 'px');
     })
     .on('click',     (ev,d)=>{ ev.stopPropagation(); openModal(d); });
 });
