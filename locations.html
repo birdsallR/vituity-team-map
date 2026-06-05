@@ -73,7 +73,7 @@
   .state { fill: #dde6f1; stroke: #fff; stroke-width: 1; transition: fill 0.15s; }
 
   .team-dot-group { cursor: pointer; }
-  .pulse-ring { fill: var(--vit-orange); fill-opacity: 0; stroke: var(--vit-orange); stroke-width: 2; stroke-opacity: 0; transform-origin: center; }
+  .pulse-ring { fill: var(--vit-orange); fill-opacity: 0; stroke: var(--vit-orange); stroke-width: 2; stroke-opacity: 0; transform-origin: center; pointer-events: none; }
   .pulse-ring.active { animation: ringPulse 2.2s ease-out infinite; }
   @keyframes ringPulse {
     0%   { transform: scale(0.8); stroke-opacity: 0.7; fill-opacity: 0.15; }
@@ -82,7 +82,7 @@
   .dot-main { stroke: white; stroke-width: 2; transition: transform 0.15s; transform-origin: center; }
   .dot-single { fill: var(--vit-orange); }
   .dot-multi  { fill: var(--vit-navy); }
-  .team-dot-group:hover .dot-main { transform: scale(1.35); filter: drop-shadow(0 0 6px rgba(242,101,34,0.55)); }
+  .team-dot-group:hover .dot-main { filter: drop-shadow(0 0 6px rgba(242,101,34,0.55)); }
   .dot-label { fill: white; font-family: 'Inter', sans-serif; font-size: 9px; font-weight: 800; text-anchor: middle; dominant-baseline: central; pointer-events: none; }
   .dot-highlighted .dot-main { transform: scale(1.5); filter: drop-shadow(0 0 10px rgba(242,101,34,0.8)); }
 
@@ -498,9 +498,16 @@ d3.json('https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json').then(us=>{
     .append('text').attr('class','dot-label').text(d=>d.members.length);
 
   dotGroups
-    .on('mouseover', (ev,d)=>{ showTip(ev,d); })
-    .on('mousemove', (ev,d)=>{ showTip(ev,d); })
-    .on('mouseout',  ()=>{ hideTip(); })
+    .on('mouseover', (ev,d)=>{
+      showTip(ev,d);
+      const base = d.members.length>1 ? DOT_R.multi : DOT_R.single;
+      d3.select(ev.currentTarget).select('.dot-main').attr('r', base * 1.45 / currentK);
+    })
+    .on('mouseout', (ev,d)=>{
+      hideTip();
+      const base = d.members.length>1 ? DOT_R.multi : DOT_R.single;
+      d3.select(ev.currentTarget).select('.dot-main').attr('r', base / currentK);
+    })
     .on('click',     (ev,d)=>{ ev.stopPropagation(); openModal(d); });
 });
 
