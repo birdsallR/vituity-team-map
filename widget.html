@@ -404,7 +404,7 @@
 <section class="hero">
   <div class="hero-sub">The 6 Types of Working Genius</div>
   <h1>Vituity Marketing Team Map</h1>
-  <p>Explore how 28 team members bring their unique genius to every project &mdash; from the first spark of wonder to the final push across the finish line.</p>
+  <p>Explore how 30 team members bring their unique genius to every project &mdash; from the first spark of wonder to the final push across the finish line.</p>
 </section>
 
 <canvas id="confetti-canvas"></canvas>
@@ -435,11 +435,11 @@
           </h3>
           <div class="callout-card callout-super">
             <strong>Execution Powerhouse</strong>
-            15 Enablement + 16 Tenacity geniuses means when a plan is set, this team delivers every time.
+            17 Enablement + 17 Tenacity geniuses means when a plan is set, this team delivers every time.
           </div>
           <div class="callout-card callout-super">
             <strong>Innovation Engine</strong>
-            9 Inventors paired with 8 Discerners = creative ideas that actually get vetted and refined.
+            9 Inventors paired with 9 Discerners = creative ideas that actually get vetted and refined.
           </div>
           <div class="callout-card callout-watch">
             <strong>Protect Your Spark Plugs</strong>
@@ -515,6 +515,8 @@ const TEAM = [
   { name: 'Tenzin N.', genius: ['E','T'], frustration: ['W','D'] },
   { name: 'Natalie P.', genius: ['E','T'], frustration: ['D','G'] },
   { name: 'Paul D.', genius: ['W','T'], frustration: ['D','G'] },
+  { name: 'Carrie O.', genius: ['D','E'], frustration: ['W','I'] },
+  { name: 'Matt N.', genius: ['T','E'], frustration: ['W','G'] },
 ];
 
 const AVATAR_COLOR = '#1B2A4A';
@@ -655,7 +657,7 @@ function buildBars() {
   TEAM.forEach(p => p.genius.forEach(t => counts[t]++));
 
   order.forEach(t => {
-    const pct = Math.round(counts[t] / 28 * 100);
+    const pct = Math.round(counts[t] / 30 * 100);
     const row = document.createElement('div');
     row.className = 'bar-row';
     row.innerHTML = `

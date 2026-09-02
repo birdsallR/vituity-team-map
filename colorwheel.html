@@ -366,7 +366,7 @@
           <div class="wheel-ring"></div>
           <div class="wheel-center">
             <div class="wheel-center-text">
-              <div class="wheel-center-num">24</div>
+              <div class="wheel-center-num">25</div>
               team members
             </div>
           </div>
@@ -394,10 +394,10 @@
         </h3>
         <div class="callout callout-green">
           <strong>Green Dominance</strong>
-          15 members carry Green energy. This team leads with empathy, patience, and genuine care for people. That's your secret sauce.
+          16 members carry Green energy. This team leads with empathy, patience, and genuine care for people. That's your secret sauce.
         </div>
         <div class="callout callout-yellow">
-          <strong>Yellow + Green = 6 People</strong>
+          <strong>Yellow + Green = 7 People</strong>
           Your largest blend! These teammates are both enthusiastic AND caring &mdash; they bring energy to the room without steamrolling.
         </div>
         <div class="callout callout-red">
@@ -465,6 +465,7 @@ const PEOPLE = [
   { name: 'Kelly', colors: ['Yellow','Green'] },
   { name: 'Olivia', colors: ['Yellow','Green'] },
   { name: 'Paul', colors: ['Green','Blue'], scores: { Green: 10, Blue: 8, Red: 4, Yellow: 3 } },
+  { name: 'Carrie', colors: ['Green','Yellow'], scores: { Green: 11, Yellow: 9, Blue: 7, Red: 5 } },
 ];
 
 const GROUPS = [
@@ -499,7 +500,7 @@ function nameStyle(colors) {
 function buildColorKey() {
   const container = document.getElementById('color-key');
   const order = ['Red','Blue','Green','Yellow'];
-  const totals = { Red: 7, Blue: 10, Green: 15, Yellow: 7 };
+  const totals = { Red: 7, Blue: 10, Green: 16, Yellow: 8 };
   order.forEach(c => {
     const info = COLORS[c];
     const card = document.createElement('div');
@@ -569,13 +570,13 @@ document.getElementById('search-input').addEventListener('input', e => {
 function buildBars() {
   const container = document.getElementById('color-bars');
   const data = [
-    { color: 'Green', count: 15 },
+    { color: 'Green', count: 16 },
     { color: 'Blue', count: 10 },
     { color: 'Red', count: 7 },
-    { color: 'Yellow', count: 7 },
+    { color: 'Yellow', count: 8 },
   ];
   data.forEach(d => {
-    const pct = Math.round(d.count / 24 * 100);
+    const pct = Math.round(d.count / 25 * 100);
     const row = document.createElement('div');
     row.className = 'bar-row';
     row.innerHTML = `
