@@ -366,7 +366,7 @@
           <div class="wheel-ring"></div>
           <div class="wheel-center">
             <div class="wheel-center-text">
-              <div class="wheel-center-num">28</div>
+              <div class="wheel-center-num">29</div>
               team members
             </div>
           </div>
@@ -469,6 +469,7 @@ const PEOPLE = [
   { name: 'Peyton', colors: ['Green','Red'], scores: { Green: 45, Red: 35, Blue: 15, Yellow: 5 } },
   { name: 'Devin', colors: ['Green','Blue'], scores: { Green: 45, Blue: 40, Red: 10, Yellow: 5 } },
   { name: 'Matt', colors: ['Blue','Green'], scores: { Green: 5, Blue: 5, Yellow: 4, Red: 3 } },
+  { name: 'Michelle', colors: ['Blue','Yellow'], scores: { Blue: 11, Yellow: 11, Red: 9, Green: 8 } },
 ];
 
 const GROUPS = [
@@ -503,7 +504,7 @@ function nameStyle(colors) {
 function buildColorKey() {
   const container = document.getElementById('color-key');
   const order = ['Red','Blue','Green','Yellow'];
-  const totals = { Red: 8, Blue: 12, Green: 19, Yellow: 8 };
+  const totals = { Red: 8, Blue: 13, Green: 19, Yellow: 9 };
   order.forEach(c => {
     const info = COLORS[c];
     const card = document.createElement('div');
@@ -574,12 +575,12 @@ function buildBars() {
   const container = document.getElementById('color-bars');
   const data = [
     { color: 'Green', count: 19 },
-    { color: 'Blue', count: 12 },
+    { color: 'Blue', count: 13 },
     { color: 'Red', count: 8 },
-    { color: 'Yellow', count: 8 },
+    { color: 'Yellow', count: 9 },
   ];
   data.forEach(d => {
-    const pct = Math.round(d.count / 28 * 100);
+    const pct = Math.round(d.count / 29 * 100);
     const row = document.createElement('div');
     row.className = 'bar-row';
     row.innerHTML = `
