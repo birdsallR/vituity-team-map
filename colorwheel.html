@@ -366,7 +366,7 @@
           <div class="wheel-ring"></div>
           <div class="wheel-center">
             <div class="wheel-center-text">
-              <div class="wheel-center-num">27</div>
+              <div class="wheel-center-num">28</div>
               team members
             </div>
           </div>
@@ -394,7 +394,7 @@
         </h3>
         <div class="callout callout-green">
           <strong>Green Dominance</strong>
-          18 members carry Green energy. This team leads with empathy, patience, and genuine care for people. That's your secret sauce.
+          19 members carry Green energy. This team leads with empathy, patience, and genuine care for people. That's your secret sauce.
         </div>
         <div class="callout callout-yellow">
           <strong>Yellow + Green = 7 People</strong>
@@ -468,6 +468,7 @@ const PEOPLE = [
   { name: 'Carrie', colors: ['Green','Yellow'], scores: { Green: 11, Yellow: 9, Blue: 7, Red: 5 } },
   { name: 'Peyton', colors: ['Green','Red'], scores: { Green: 45, Red: 35, Blue: 15, Yellow: 5 } },
   { name: 'Devin', colors: ['Green','Blue'], scores: { Green: 45, Blue: 40, Red: 10, Yellow: 5 } },
+  { name: 'Matt', colors: ['Blue','Green'], scores: { Green: 5, Blue: 5, Yellow: 4, Red: 3 } },
 ];
 
 const GROUPS = [
@@ -502,7 +503,7 @@ function nameStyle(colors) {
 function buildColorKey() {
   const container = document.getElementById('color-key');
   const order = ['Red','Blue','Green','Yellow'];
-  const totals = { Red: 8, Blue: 11, Green: 18, Yellow: 8 };
+  const totals = { Red: 8, Blue: 12, Green: 19, Yellow: 8 };
   order.forEach(c => {
     const info = COLORS[c];
     const card = document.createElement('div');
@@ -572,13 +573,13 @@ document.getElementById('search-input').addEventListener('input', e => {
 function buildBars() {
   const container = document.getElementById('color-bars');
   const data = [
-    { color: 'Green', count: 18 },
-    { color: 'Blue', count: 11 },
+    { color: 'Green', count: 19 },
+    { color: 'Blue', count: 12 },
     { color: 'Red', count: 8 },
     { color: 'Yellow', count: 8 },
   ];
   data.forEach(d => {
-    const pct = Math.round(d.count / 27 * 100);
+    const pct = Math.round(d.count / 28 * 100);
     const row = document.createElement('div');
     row.className = 'bar-row';
     row.innerHTML = `
